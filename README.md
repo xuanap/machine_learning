@@ -131,3 +131,8 @@ python main.py --mode smoke --suite all
 详见 [算法接口](docs/algorithm_interface.md)、[客户分析](docs/customer_analysis.md)、[分群比较](docs/cluster_comparison.md)和 [A 的接入说明](docs/a_handoff.md)。
 
 C 当前的 `run_spectral.py` 在运行中执行 log1p 和标准化；A 的正式入口需要另存的六特征矩阵及 `config/preprocessing_metadata.example.json` 所示元数据。指标实现、抽样与计时规则待统一，不把 A 的参考指标直接作为小组最终协议。
+
+
+五种聚类算法可共用 `preprocessing.feature_scaling.load_customer_features(path)`。
+统一实验入口加载一次现有的 `data/customer_features.csv`，获得按原表顺序排列的
+`customer_ids, X`，再将同一个 `X` 传入各算法。原始尺度特征表也可用于客户画像。
