@@ -110,3 +110,9 @@ Calinski–Harabasz 指标。耗时覆盖建图、谱分解和 K-means。
 RBF 图的存储开销随客户数平方增长。图的连通分量数超过 K 时，需增大邻居数
 或降低 RBF 的 gamma。簇编号可在不同运行之间置换。
 # machine_learning
+
+
+
+五种聚类算法可共用 `preprocessing.feature_scaling.load_customer_features(path)`。
+统一实验入口加载一次现有的 `data/customer_features.csv`，获得按原表顺序排列的
+`customer_ids, X`，再将同一个 `X` 传入各算法。原始尺度特征表也可用于客户画像。
