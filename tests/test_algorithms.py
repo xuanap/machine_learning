@@ -121,9 +121,9 @@ class AlgorithmTests(unittest.TestCase):
 
 
 class PreparedInputTests(unittest.TestCase):
-    def test_formal_run_requires_prepared_input(self):
-        with self.assertRaisesRegex(ValueError, "Formal runs require"):
-            load_input("formal")
+    def test_formal_override_requires_both_files(self):
+        with self.assertRaisesRegex(ValueError, "Supply both"):
+            load_input("formal", ROOT / "data/customer_features.csv")
 
     def test_smoke_sample_reproducible_and_identified(self):
         first = load_input("smoke", sample_size=20)

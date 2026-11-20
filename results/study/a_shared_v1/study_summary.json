@@ -1,0 +1,52 @@
+{
+  "customers": 4338,
+  "runs": 78,
+  "status_counts": {
+    "ok": 78
+  },
+  "seeds": [
+    0,
+    42,
+    2026
+  ],
+  "input": {
+    "input_filename": "customer_features.csv",
+    "input_sha256": "d031d6b722ae83bf3159a898ede727daa8004a6043acc342dfa87f2609e34013",
+    "source_features_sha256": "d031d6b722ae83bf3159a898ede727daa8004a6043acc342dfa87f2609e34013",
+    "data_version": "online-retail-six-features-v1",
+    "feature_columns": [
+      "Recency",
+      "Frequency",
+      "Monetary",
+      "AvgOrderValue",
+      "ProductDiversity",
+      "ActiveDays"
+    ],
+    "original_input_rows": 4338,
+    "used_rows": 4338,
+    "matrix_sha256": "a70d60d6d3f58b442336ee6a2a113b69c69f2945e516098911c705d4912fc72b",
+    "ordered_customer_ids_sha256": "a7e9cccd94394bb59dfa0e35f33f27b8a1633c319a25f28dd7354e7c92c579e6",
+    "preprocessing": {
+      "version": "shared-8e4baaab93a6",
+      "representation": "scaled_features",
+      "function": "preprocessing.feature_scaling.load_customer_features",
+      "code_sha256": "8e4baaab93a623286deea1b9f76c5e7975cc52acf18cb5e7cc7b4bdc6b5b3a98",
+      "scaler": "StandardScaler",
+      "log1p_columns": [
+        "Frequency",
+        "Monetary",
+        "AvgOrderValue",
+        "ProductDiversity"
+      ],
+      "scikit_learn": "1.6.1"
+    }
+  },
+  "metrics_provider": "full_euclidean_matches_C_spectral_current",
+  "source_manifests": {
+    "a_shared_baseline_v1": "520af4d7cee96260810dd8e6f09bff5349a379faee8dc354146869d63fa75d83",
+    "a_shared_parameters_v1": "55d20132cfa654df2550dd4bfa8716fe2bef56509fc1cc2ad558083b27c7445d",
+    "a_shared_ablation_v1": "9f6dd463f747255d4f1800e2fa643e45f94f95b8ed26483e3a8d4a5ed163041a"
+  },
+  "summary_code_sha256": "34ecc9be2d6649bf48b660a7aa74c83576831489e1bac236713382a499ac97f7",
+  "scope": "A-member study using C's shared preprocessing; not the final five-algorithm comparison; ablation scope proposed by A"
+}

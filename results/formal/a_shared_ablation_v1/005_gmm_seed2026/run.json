@@ -1,0 +1,95 @@
+{
+  "task": {
+    "algorithm": "gmm",
+    "study": "feature_ablation",
+    "factor": "feature_set",
+    "value": "RFM",
+    "features": [
+      "Recency",
+      "Frequency",
+      "Monetary"
+    ],
+    "feature_set": "RFM",
+    "params": {
+      "covariance_type": "full",
+      "n_init": 3,
+      "max_iter": 300,
+      "tol": 0.001,
+      "reg_covar": 1e-06,
+      "n_components": 4
+    },
+    "seed": 2026
+  },
+  "fit": {
+    "algorithm": "gmm",
+    "fit_seconds": 0.17496659999960684,
+    "params": {
+      "covariance_type": "full",
+      "init_params": "kmeans",
+      "max_iter": 300,
+      "means_init": null,
+      "n_components": 4,
+      "n_init": 3,
+      "precisions_init": null,
+      "random_state": 2026,
+      "reg_covar": 1e-06,
+      "tol": 0.001,
+      "verbose": 0,
+      "verbose_interval": 10,
+      "warm_start": false,
+      "weights_init": null
+    },
+    "seed": 2026,
+    "status": "ok",
+    "n_iter": 27,
+    "converged": true,
+    "warnings": [],
+    "diagnostics": {
+      "aic": 9025.229517756792,
+      "bic": 9273.861096720879,
+      "lower_bound": -1.0318333822287995,
+      "weights": [
+        0.29357004882821,
+        0.2335535181141494,
+        0.12895136111873473,
+        0.34392507193890587
+      ],
+      "distinct_clusters": 4,
+      "threads": 1
+    }
+  },
+  "summary": {
+    "run_id": "005_gmm_seed2026",
+    "mode": "formal",
+    "algorithm": "gmm",
+    "study": "feature_ablation",
+    "factor": "feature_set",
+    "value": "RFM",
+    "feature_set": "RFM",
+    "seed": 2026,
+    "samples": 4338,
+    "features": 3,
+    "requested_params": "{\"covariance_type\": \"full\", \"max_iter\": 300, \"n_components\": 4, \"n_init\": 3, \"reg_covar\": 1e-06, \"tol\": 0.001}",
+    "status": "ok",
+    "fit_seconds": 0.17496659999960684,
+    "n_iter": 27,
+    "converged": true,
+    "warning_count": 0,
+    "aic": 9025.229517756792,
+    "bic": 9273.861096720879,
+    "lower_bound": -1.0318333822287995,
+    "weights": [
+      0.29357004882821,
+      0.2335535181141494,
+      0.12895136111873473,
+      0.34392507193890587
+    ],
+    "distinct_clusters": 4,
+    "threads": 1,
+    "silhouette": 0.08532104210017541,
+    "davies_bouldin": 2.0620107096789564,
+    "calinski_harabasz": 1416.572305014603,
+    "silhouette_samples": 4338,
+    "metric_note": ""
+  }
+}

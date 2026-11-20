@@ -6,6 +6,7 @@ from pathlib import Path
 
 from experiments.inputs import ROOT, load_input
 from experiments.runner import run_suite
+from experiments.group_metrics import evaluate_full
 
 
 def main():
@@ -24,7 +25,11 @@ def main():
         config = json.loads(config_path.read_text(encoding="utf-8"))
         timestamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
         output = args.output or ROOT / "results" / args.mode / f"{args.suite}_{timestamp}"
-        table = run_suite(bundle, config, output, args.suite)
+        if args.mode == "formal":
+            table = run_suite(bundle, config, output, args.suite, metric_fn=evaluate_full,
+                              metrics_provider="full_euclidean_matches_C_spectral_current")
+        else:
+            table = run_suite(bundle, config, output, args.suite)
     except (ValueError, FileExistsError, FileNotFoundError) as error:
         parser.error(str(error))
     print(f"Mode: {args.mode}; runs: {len(table)}; status counts: {table.status.value_counts().to_dict()}")

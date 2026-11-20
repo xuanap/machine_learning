@@ -1,0 +1,5 @@
+﻿study,algorithm,factor,value,metric,planned_runs,valid_runs,non_ok_runs,unavailable_metric_runs,mean,std
+baseline,kmeans,algorithm,kmeans,silhouette,3,3,0,0,0.25044487512820585,0.0006977737846545306
+baseline,kmeans,algorithm,kmeans,fit_seconds,3,3,0,0,0.036384066666263,0.005864924478879048
+baseline,gmm,algorithm,gmm,silhouette,3,3,0,0,0.10603226822533629,0.004604004073147242
+baseline,gmm,algorithm,gmm,fit_seconds,3,3,0,0,0.1160166999992119,0.005358218167371996

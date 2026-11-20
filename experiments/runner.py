@@ -14,7 +14,7 @@ import sklearn
 
 from algorithms import gmm, kmeans
 from preprocessing.feature_engineering import FEATURE_COLUMNS
-from .inputs import ROOT, file_hash
+from .inputs import ROOT, file_hash, matrix_hash
 from .reference_metrics import evaluate
 
 ALGORITHMS = {"kmeans": kmeans.fit_predict, "gmm": gmm.fit_predict}
@@ -78,10 +78,17 @@ def run_suite(bundle, config, output, suite="baseline", metric_fn=evaluate,
         bundle.matrix(task["features"])
     output = Path(output)
     output.mkdir(parents=True, exist_ok=False)
+    model_input = output / "model_input.csv"
+    bundle.frame.to_csv(model_input, index=False, encoding="utf-8-sig", float_format="%.17g", lineterminator="\n")
+    saved = pd.read_csv(model_input, dtype={"CustomerID": "string"}, float_precision="round_trip")
+    if matrix_hash(saved) != matrix_hash(bundle.frame):
+        raise ValueError("Saved model coordinates do not round-trip exactly")
     code_files = [ROOT / "main.py", *sorted((ROOT / "algorithms").glob("*.py")),
-                  *sorted((ROOT / "experiments").glob("*.py"))]
+                  *sorted((ROOT / "experiments").glob("*.py")), ROOT / "preprocessing/feature_scaling.py"]
     write_json(output / "experiment_manifest.json", {
         "mode": bundle.mode, "suite": suite, "input": bundle.provenance, "config": config,
+        "model_input": {"filename": model_input.name, "sha256": file_hash(model_input),
+                        "matrix_sha256": matrix_hash(saved)},
         "metrics_provider": metrics_provider,
         "timing": "estimator.fit only, including estimator initialization; excludes prediction, metrics, file I/O and plotting",
         "threads": config["threads"],
@@ -137,6 +144,6 @@ def run_suite(bundle, config, output, suite="baseline", metric_fn=evaluate,
     (output / "NOTICE.txt").write_text(
         "SMOKE TEST ONLY. Raw features; small diagnostic sample. Not a formal comparison or evidence of best parameters.\n"
         if bundle.mode == "smoke" else
-        "Prepared input provenance is recorded. A's reference metric protocol must be aligned with C before the group comparison.\n",
+        f"Full-customer prepared-input study. Metric provider: {metrics_provider}. Group approval and timing comparability must not be inferred from this run.\n",
         encoding="utf-8")
     return table

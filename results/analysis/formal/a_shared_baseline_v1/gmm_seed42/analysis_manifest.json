@@ -1,0 +1,21 @@
+{
+  "mode": "formal",
+  "algorithm": "gmm",
+  "run_id": "004_gmm_seed42",
+  "data_version": "online-retail-six-features-v1",
+  "customers": 4338,
+  "source_customers": 4338,
+  "shares_denominator": "customers and monetary in this analysed run, not the entire source population",
+  "original_features_sha256": "d031d6b722ae83bf3159a898ede727daa8004a6043acc342dfa87f2609e34013",
+  "artifacts_sha256": {
+    "experiment_manifest.json": "520af4d7cee96260810dd8e6f09bff5349a379faee8dc354146869d63fa75d83",
+    "run.json": "18a9355d0f26dc5ac8b1a21376ae2701f332cc33d8bfa0c90777d7d090db9109",
+    "labels.csv": "c97fc9d1c5820992136a48123f11c35114e2eb31296796c2771bb64e3c7d4631",
+    "probabilities.csv": "94f4a84617277ce76fa31ef4879626d5d9db7baa21ca1cc5a17b28fb5ae88f69"
+  },
+  "code_sha256": {
+    "analyze_run.py": "287c7cfe3981baaac80014865bc8a764ecfa0d8fc36e675358a65cf432b8516c",
+    "analysis/customer_profiles.py": "2325d1a2738dac531a1295dd6fd0f2882caf96a82f32ac62f725f547fc64b56b"
+  },
+  "note": "Profiles are in original units; distances are in the exact fitted feature space; Monetary is not net of returns"
+}

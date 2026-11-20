@@ -1,0 +1,95 @@
+{
+  "task": {
+    "algorithm": "gmm",
+    "study": "feature_ablation",
+    "factor": "feature_set",
+    "value": "RFM",
+    "features": [
+      "Recency",
+      "Frequency",
+      "Monetary"
+    ],
+    "feature_set": "RFM",
+    "params": {
+      "covariance_type": "full",
+      "n_init": 3,
+      "max_iter": 300,
+      "tol": 0.001,
+      "reg_covar": 1e-06,
+      "n_components": 4
+    },
+    "seed": 42
+  },
+  "fit": {
+    "algorithm": "gmm",
+    "fit_seconds": 0.1869022999999288,
+    "params": {
+      "covariance_type": "full",
+      "init_params": "kmeans",
+      "max_iter": 300,
+      "means_init": null,
+      "n_components": 4,
+      "n_init": 3,
+      "precisions_init": null,
+      "random_state": 42,
+      "reg_covar": 1e-06,
+      "tol": 0.001,
+      "verbose": 0,
+      "verbose_interval": 10,
+      "warm_start": false,
+      "weights_init": null
+    },
+    "seed": 42,
+    "status": "ok",
+    "n_iter": 27,
+    "converged": true,
+    "warnings": [],
+    "diagnostics": {
+      "aic": 9023.37980761121,
+      "bic": 9272.011386575297,
+      "lower_bound": -1.0315520915351022,
+      "weights": [
+        0.34392665634510305,
+        0.2917284916617004,
+        0.13057741299011424,
+        0.23376743900308247
+      ],
+      "distinct_clusters": 4,
+      "threads": 1
+    }
+  },
+  "summary": {
+    "run_id": "004_gmm_seed42",
+    "mode": "formal",
+    "algorithm": "gmm",
+    "study": "feature_ablation",
+    "factor": "feature_set",
+    "value": "RFM",
+    "feature_set": "RFM",
+    "seed": 42,
+    "samples": 4338,
+    "features": 3,
+    "requested_params": "{\"covariance_type\": \"full\", \"max_iter\": 300, \"n_components\": 4, \"n_init\": 3, \"reg_covar\": 1e-06, \"tol\": 0.001}",
+    "status": "ok",
+    "fit_seconds": 0.1869022999999288,
+    "n_iter": 27,
+    "converged": true,
+    "warning_count": 0,
+    "aic": 9023.37980761121,
+    "bic": 9272.011386575297,
+    "lower_bound": -1.0315520915351022,
+    "weights": [
+      0.34392665634510305,
+      0.2917284916617004,
+      0.13057741299011424,
+      0.23376743900308247
+    ],
+    "distinct_clusters": 4,
+    "threads": 1,
+    "silhouette": 0.08482327974747422,
+    "davies_bouldin": 2.070344846122675,
+    "calinski_harabasz": 1416.474404982802,
+    "silhouette_samples": 4338,
+    "metric_note": ""
+  }
+}

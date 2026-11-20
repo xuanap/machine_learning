@@ -1,0 +1,9 @@
+{
+  "passed": true,
+  "runs": 78,
+  "label_rows": 338364,
+  "gmm_probability_rows": 182196,
+  "full_metric_recomputations": 6,
+  "source_sha256": "d031d6b722ae83bf3159a898ede727daa8004a6043acc342dfa87f2609e34013",
+  "scope": "Artifact and metric audit; not an independent model/code review"
+}

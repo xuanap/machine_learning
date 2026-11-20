@@ -1,0 +1,100 @@
+{
+  "task": {
+    "algorithm": "gmm",
+    "study": "gmm_k",
+    "factor": "K",
+    "value": 5,
+    "features": [
+      "Recency",
+      "Frequency",
+      "Monetary",
+      "AvgOrderValue",
+      "ProductDiversity",
+      "ActiveDays"
+    ],
+    "feature_set": "six_features",
+    "params": {
+      "covariance_type": "full",
+      "n_init": 3,
+      "max_iter": 300,
+      "tol": 0.001,
+      "reg_covar": 1e-06,
+      "n_components": 5
+    },
+    "seed": 0
+  },
+  "fit": {
+    "algorithm": "gmm",
+    "fit_seconds": 0.2990589999972144,
+    "params": {
+      "covariance_type": "full",
+      "init_params": "kmeans",
+      "max_iter": 300,
+      "means_init": null,
+      "n_components": 5,
+      "n_init": 3,
+      "precisions_init": null,
+      "random_state": 0,
+      "reg_covar": 1e-06,
+      "tol": 0.001,
+      "verbose": 0,
+      "verbose_interval": 10,
+      "warm_start": false,
+      "weights_init": null
+    },
+    "seed": 0,
+    "status": "ok",
+    "n_iter": 16,
+    "converged": true,
+    "warnings": [],
+    "diagnostics": {
+      "aic": -37647.027813672976,
+      "bic": -36760.87936557021,
+      "lower_bound": 4.370703484009979,
+      "weights": [
+        0.3441678192715541,
+        0.297639673204145,
+        0.1147252143121534,
+        0.07752928084689613,
+        0.1659380123652515
+      ],
+      "distinct_clusters": 5,
+      "threads": 1
+    }
+  },
+  "summary": {
+    "run_id": "021_gmm_seed0",
+    "mode": "formal",
+    "algorithm": "gmm",
+    "study": "gmm_k",
+    "factor": "K",
+    "value": 5,
+    "feature_set": "six_features",
+    "seed": 0,
+    "samples": 4338,
+    "features": 6,
+    "requested_params": "{\"covariance_type\": \"full\", \"max_iter\": 300, \"n_components\": 5, \"n_init\": 3, \"reg_covar\": 1e-06, \"tol\": 0.001}",
+    "status": "ok",
+    "fit_seconds": 0.2990589999972144,
+    "n_iter": 16,
+    "converged": true,
+    "warning_count": 0,
+    "aic": -37647.027813672976,
+    "bic": -36760.87936557021,
+    "lower_bound": 4.370703484009979,
+    "weights": [
+      0.3441678192715541,
+      0.297639673204145,
+      0.1147252143121534,
+      0.07752928084689613,
+      0.1659380123652515
+    ],
+    "distinct_clusters": 5,
+    "threads": 1,
+    "silhouette": 0.07572504073317915,
+    "davies_bouldin": 2.4362940014236405,
+    "calinski_harabasz": 1064.1926907685215,
+    "silhouette_samples": 4338,
+    "metric_note": ""
+  }
+}

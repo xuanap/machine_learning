@@ -42,6 +42,8 @@ def compare_runs(left_experiment, left_run, right_experiment, right_run, output)
     for field in ["data_version", "source_features_sha256", "input_sha256", "preprocessing"]:
         if lm["input"][field] != rm["input"][field]:
             raise ValueError(f"Runs have different {field}")
+    if lm["input"].get("matrix_sha256") != rm["input"].get("matrix_sha256"):
+        raise ValueError("Runs have different model coordinates")
     if lr["task"]["features"] != rr["task"]["features"]:
         raise ValueError("Use the same ordered features for this algorithm comparison")
     customers, overlap, fractions, mapping, summary = compare_partitions(left, right)

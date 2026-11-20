@@ -1,6 +1,6 @@
 # A 的 K-means / GMM 接口与实验使用说明
 
-A 的两种算法、参数/消融框架、客户画像和分群比较工具已经实现。仓库已有 C 的谱聚类预处理代码，但尚未导出统一预处理矩阵及元数据，五算法正式比较协议也待共同确认。原始尺度 smoke 结果只验证代码，不作为正式算法效果。
+A 的两种算法、参数/消融框架、客户画像和分群比较工具已经实现。已接入 C 的共享预处理函数，不要求 C 另导出 CSV；五算法最终整合与计时协议仍由小组确认。原始尺度 smoke 结果只验证代码，不作为正式算法效果。
 
 下面是 A 提出的接入约定，可由 C 采用或在对齐后调整；不代表小组已经确认。当前五种算法的最终统一入口仍由 C 负责。
 
@@ -64,50 +64,36 @@ python -m venv .venv
 
 仓库保留 `results/smoke/a_framework_check_v2/` 作为已有回归测试夹具；它记录先前 300 位客户的 16 次试跑，并非本分支的重新运行结果。用上述命令可运行当前代码，输出会另建目录。小规模配置见 config/smoke_experiments.json；图上带 SMOKE ONLY 标识。当前绘图保存 plot_support.csv，记录有效/计划运行数；只有一次有效运行时标准差缺失，不画成零误差线。
 
-## 4. C 提供什么后可以启动正式实验
+## 4. 直接使用 C 的共享函数运行全客户实验
 
-1. 处理后的 CSV：CustomerID 与原六特征列，客户集合和源表相同；行顺序可不同，但每行必须保留正确 ID。
-2. 预处理说明 JSON：原特征表及输出文件的 SHA-256、数据版本、特征列顺序、处理版本、实际 scaler 名称、实际 log1p 列列表。
-3. C 保存拟合后的处理器或均值、尺度等参数，以便复现。不要把仅用于画图的 PCA 二维坐标替代六特征基线输入。
-
-模板：config/preprocessing_metadata.example.json。里面有占位符，**不是已经完成的预处理结果**，不能直接用作正式元数据。填写实际信息后另存文件。
-
-SHA-256 可这样计算：
-
-```python
-import hashlib
-from pathlib import Path
-digest = hashlib.sha256(Path("data/customer_features_scaled.csv").read_bytes()).hexdigest()
-```
-
-命令示例：
+默认正式入口读取现有 data/customer_features.csv，调用 preprocessing.feature_scaling.load_customer_features 一次，使用返回的原表顺序 CustomerID 和六维矩阵。不会重复标准化，不使用 PCA 二维绘图坐标。
 
 ```text
-.venv\Scripts\python main.py --mode formal --suite baseline --input data/customer_features_scaled.csv --metadata data/preprocessing_metadata.json
-.venv\Scripts\python main.py --mode formal --suite parameters --input data/customer_features_scaled.csv --metadata data/preprocessing_metadata.json
-.venv\Scripts\python main.py --mode formal --suite ablation --input data/customer_features_scaled.csv --metadata data/preprocessing_metadata.json
+python main.py --mode formal --suite baseline
+python main.py --mode formal --suite parameters
+python main.py --mode formal --suite ablation
 ```
 
-默认正式配置为 config/experiment_config.json：K=2..8、三个随机种子、两种 K-means 初始化、四种 GMM 协方差类型，特征消融先安排 RFM 与六特征。它们是待对齐的起步方案，不是已完成的实验结果。
+源表及共享代码 SHA-256、log1p 列、特征顺序、实际矩阵哈希、环境版本均自动记录。每个实验目录保存 model_input.csv 作为精确可复现的拟合坐标快照；这由 A 的运行程序自动完成，不要求 C 另供数据或手填元数据。现有 CSV 保留原始尺度，用于画像。
 
-命令行入口会检查元数据哈希、客户覆盖、缺失值、重复 ID 和表结构；拒绝缺少预处理说明的正式运行和未改变的原始 CSV。元数据只能记录 C 声明的处理过程，不能仅靠 JSON 自动证明标准化算法实现正确。
+旧的外部处理后 CSV + JSON 接入方式仍支持：显式同时提供 --input 和 --metadata；这是可选兼容入口，不是当前实验的前置条件。仅指定一个参数会报错。
 
-当前入口支持逐特征的 StandardScaler、RobustScaler、MinMaxScaler 及 log1p。消融通过选择已处理矩阵的相应列进行；若小组采用需要跨特征共同拟合的其他变换，应先调整这部分协议。
+本轮配置为 config/experiment_config.json：K=2..8、种子 0/42/2026、两种 K-means 初始化、四种 GMM 协方差类型。RFM 与六特征对照是 A 先行运行的方案，最终消融分工仍与 B 确认。
 
 ## 5. 输出和评价口径
 
-每个运行保存：labels.csv、centers.csv、cluster_sizes.csv、run.json；GMM 另存 probabilities.csv。顶层保存 summary.csv、experiment_manifest.json、sample_customer_ids.csv、NOTICE.txt 和图表。
+每个运行保存：labels.csv、centers.csv、cluster_sizes.csv、run.json；GMM 另存 probabilities.csv。顶层保存 summary.csv、experiment_manifest.json、sample_customer_ids.csv、model_input.csv、NOTICE.txt 和图表。
 
 即使配置运行失败，也会在 summary.csv 和 run.json 留下参数与错误；未收敛、退化成更少簇等情况不伪装成正常结果。已有输出目录不会自动覆盖。
 
-本地参考指标位于 experiments/reference_metrics.py：Silhouette、DB、CH；Silhouette 最多取固定种子的 1,000 个样本，DB 和 CH 使用全体输入。它是 A 用来验证框架的实现，**尚未替代 C 的统一指标**。不同种子之间的正式汇总和稳定性仍按 C 的协议进行。
+原始尺度 smoke 仍使用 experiments/reference_metrics.py 的参考指标。正式命令使用 experiments/group_metrics.py：在实际拟合特征空间对全部 4,338 位客户计算 Euclidean Silhouette、DB 和 CH，定义与 C 当前 run_spectral.py 一致；记录名为 full_euclidean_matches_C_spectral_current。这表示与当前代码对齐，不冒称五算法最终协议已获全组批准。
 
-C 可以只导入算法，再统一计算指标。也可在 Python 调用 experiments.runner.run_suite 时通过 metric_fn 和 metrics_provider 接入 C 的评价函数。预处理数据齐备后，指标协议仍需对齐，不能直接把标有 A_reference_pending_C 的结果宣称为五算法最终对比。
+A 的算法拟合和指标计算均限制数值库线程为 1；计时只包含 fit。C 的谱聚类入口尚未采用相同线程限制，五算法最终耗时横比仍需统一运行环境与范围。C 可直接导入算法，也可通过 run_suite 的 metric_fn / metrics_provider 接入未来的统一评价实现。
 
 特征消融的内部指标处于不同特征空间，不能仅因数值上升便认定新增特征更好；应结合客户画像和分群一致性分析。
 
 ## 6. 下一步
 
-当前可把两种算法和本说明交给 C 对接。取得统一处理结果及指标协议后，运行全客户正式基线，再做参数实验及与 B 约定的特征消融，最后才整理客户画像与报告结论。
+已完成 6 次基线、60 次参数实验及 12 次 A 的特征对照，均使用 C 的共享预处理。结果和边界见 docs/a_experiment_results.md；这些是 A 的真实全客户实验，尚不构成五算法最终结论。
 
 结果分析工具见 docs/customer_analysis.md，两算法比较见 docs/cluster_comparison.md。分支接入范围和待对齐事项见 docs/a_handoff.md。

@@ -1,0 +1,22 @@
+{
+  "mode": "formal",
+  "algorithm": "kmeans",
+  "run_id": "001_kmeans_seed42",
+  "data_version": "online-retail-six-features-v1",
+  "customers": 4338,
+  "source_customers": 4338,
+  "shares_denominator": "customers and monetary in this analysed run, not the entire source population",
+  "original_features_sha256": "d031d6b722ae83bf3159a898ede727daa8004a6043acc342dfa87f2609e34013",
+  "artifacts_sha256": {
+    "experiment_manifest.json": "520af4d7cee96260810dd8e6f09bff5349a379faee8dc354146869d63fa75d83",
+    "run.json": "256b4bfce32f5a51dc6133224efe51ef124be303ceaef409fffecc828264aa38",
+    "labels.csv": "5e5033e81c91464ca43bb98e089c074ea2f1937a92d7bb01443c27aeadb2f349",
+    "model_input.csv": "994864675464d901b4333e64230cb634eef19d4205b0be7d5747a2364fa9a778",
+    "centers.csv": "1dbe36e2dae56fd2c11a5d818ab1eae4ec90a9f8096da82baa5f1b382a96a24f"
+  },
+  "code_sha256": {
+    "analyze_run.py": "287c7cfe3981baaac80014865bc8a764ecfa0d8fc36e675358a65cf432b8516c",
+    "analysis/customer_profiles.py": "2325d1a2738dac531a1295dd6fd0f2882caf96a82f32ac62f725f547fc64b56b"
+  },
+  "note": "Profiles are in original units; distances are in the exact fitted feature space; Monetary is not net of returns"
+}

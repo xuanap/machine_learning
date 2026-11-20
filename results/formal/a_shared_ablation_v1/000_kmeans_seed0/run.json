@@ -1,0 +1,75 @@
+{
+  "task": {
+    "algorithm": "kmeans",
+    "study": "feature_ablation",
+    "factor": "feature_set",
+    "value": "RFM",
+    "features": [
+      "Recency",
+      "Frequency",
+      "Monetary"
+    ],
+    "feature_set": "RFM",
+    "params": {
+      "init": "k-means++",
+      "n_init": 10,
+      "max_iter": 300,
+      "tol": 0.0001,
+      "n_clusters": 4
+    },
+    "seed": 0
+  },
+  "fit": {
+    "algorithm": "kmeans",
+    "fit_seconds": 0.033835300000646384,
+    "params": {
+      "algorithm": "lloyd",
+      "copy_x": true,
+      "init": "k-means++",
+      "max_iter": 300,
+      "n_clusters": 4,
+      "n_init": 10,
+      "random_state": 0,
+      "tol": 0.0001,
+      "verbose": 0
+    },
+    "seed": 0,
+    "status": "ok",
+    "n_iter": 5,
+    "converged": null,
+    "warnings": [],
+    "diagnostics": {
+      "inertia": 3242.8714102884664,
+      "distinct_clusters": 4,
+      "iteration_limit_reached": false,
+      "threads": 1
+    }
+  },
+  "summary": {
+    "run_id": "000_kmeans_seed0",
+    "mode": "formal",
+    "algorithm": "kmeans",
+    "study": "feature_ablation",
+    "factor": "feature_set",
+    "value": "RFM",
+    "feature_set": "RFM",
+    "seed": 0,
+    "samples": 4338,
+    "features": 3,
+    "requested_params": "{\"init\": \"k-means++\", \"max_iter\": 300, \"n_clusters\": 4, \"n_init\": 10, \"tol\": 0.0001}",
+    "status": "ok",
+    "fit_seconds": 0.033835300000646384,
+    "n_iter": 5,
+    "converged": null,
+    "warning_count": 0,
+    "inertia": 3242.8714102884664,
+    "distinct_clusters": 4,
+    "iteration_limit_reached": false,
+    "threads": 1,
+    "silhouette": 0.3797263013879054,
+    "davies_bouldin": 0.8589560491008972,
+    "calinski_harabasz": 4352.951985043067,
+    "silhouette_samples": 4338,
+    "metric_note": ""
+  }
+}

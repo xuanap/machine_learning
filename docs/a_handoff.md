@@ -12,13 +12,13 @@
 
 安装和完整测试命令见 README。requirements-algorithms.txt 引用共享 requirements.txt，使用仓库已有的 scikit-learn 和 SciPy 版本，另加入绘图和线程限制依赖。
 
-## 与 C 对齐后进行的工作
+## 当前接入状态与后续协调
 
-仓库 run_spectral.py 已实现四列 log1p 和六列 StandardScaler，但只导出标签。建议确认这是否为全组统一方案，并另存保留 CustomerID 的处理后六特征 CSV、元数据和可复现的处理器。A 的元数据模板在 config/preprocessing_metadata.example.json，属于建议接入格式，可协商调整。
+已合入 C 的 preprocessing/feature_scaling.py，正式入口直接调用 load_customer_features 取得 CustomerID 和 X，不要求 C 导出新 CSV。A 自动记录来源、矩阵快照与代码版本。
 
-A 目前的参考 Silhouette 最多固定抽样 1,000 人，C 当前入口使用全量；正式比较必须统一。DB/CH、DBSCAN 噪声点处理、随机种子和计时范围也需共同约定。若由 C 统一运行，可直接导入 A 的算法并使用 C 的评价函数。
+正式实验按 C 当前入口对全量客户计算 Silhouette、DB、CH；全组最终指标函数、DBSCAN 噪声点处理、线程数与计时仍由 C 统一整合。本轮只对 A 的两种算法作结论。特征对照先完成 RFM 与六特征两组，最终分工仍与 B 对齐。
 
-完成这些对齐后，再运行全客户正式基线、参数实验和约定的特征消融，生成正式画像与分群比较。当前不宣称正式聚类效果或最佳参数。
+当前完成 78 次全客户运行及画像、分群比较，说明见 docs/a_experiment_results.md。个人报告和讲稿继续留在仓库之外。
 
 ## 本次上传的核对边界
 
@@ -35,3 +35,5 @@ A 目前的参考 Silhouette 最多固定抽样 1,000 人，C 当前入口使用
 新增 .gitattributes 固定文本文件 LF 换行，避免 Windows 的 core.autocrlf 改变 CSV 字节后导致源数据哈希校验失败。数据及 C 的源文件在本次提交中没有改动。
 
 已人工核对新增源代码、接口和提交文件范围。autoreview 曾尝试运行，但因环境缺少 TruffleHog 在模型复核前退出；本说明不声称自动源码复核通过。
+
+后续接入验证：共享函数调用与独立 log1p/Z-score 核对、客户顺序、原始尺度画像、精确矩阵快照及全量指标对齐等测试通过，当前完整测试为 42 项。

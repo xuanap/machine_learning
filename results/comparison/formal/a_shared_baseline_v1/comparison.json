@@ -1,0 +1,72 @@
+{
+  "mode": "formal",
+  "customers": 4338,
+  "left_clusters": 4,
+  "right_clusters": 4,
+  "ari": 0.32095954133350935,
+  "nmi": 0.3695397453650404,
+  "matched_customers": 2440,
+  "matched_overlap_fraction": 0.5624711848778239,
+  "unmatched_right_clusters": [],
+  "interpretation": "Partition agreement, not accuracy or real customer behavior change. One-to-one matching may leave split clusters unmatched.",
+  "left": {
+    "experiment": "a_shared_baseline_v1",
+    "run_id": "001_kmeans_seed42",
+    "manifest_sha256": "520af4d7cee96260810dd8e6f09bff5349a379faee8dc354146869d63fa75d83",
+    "run_sha256": "256b4bfce32f5a51dc6133224efe51ef124be303ceaef409fffecc828264aa38",
+    "labels_sha256": "5e5033e81c91464ca43bb98e089c074ea2f1937a92d7bb01443c27aeadb2f349"
+  },
+  "right": {
+    "experiment": "a_shared_baseline_v1",
+    "run_id": "004_gmm_seed42",
+    "manifest_sha256": "520af4d7cee96260810dd8e6f09bff5349a379faee8dc354146869d63fa75d83",
+    "run_sha256": "18a9355d0f26dc5ac8b1a21376ae2701f332cc33d8bfa0c90777d7d090db9109",
+    "labels_sha256": "c97fc9d1c5820992136a48123f11c35114e2eb31296796c2771bb64e3c7d4631"
+  },
+  "left_algorithm": "kmeans",
+  "right_algorithm": "gmm",
+  "input": {
+    "input_filename": "customer_features.csv",
+    "input_sha256": "d031d6b722ae83bf3159a898ede727daa8004a6043acc342dfa87f2609e34013",
+    "source_features_sha256": "d031d6b722ae83bf3159a898ede727daa8004a6043acc342dfa87f2609e34013",
+    "data_version": "online-retail-six-features-v1",
+    "feature_columns": [
+      "Recency",
+      "Frequency",
+      "Monetary",
+      "AvgOrderValue",
+      "ProductDiversity",
+      "ActiveDays"
+    ],
+    "original_input_rows": 4338,
+    "used_rows": 4338,
+    "matrix_sha256": "a70d60d6d3f58b442336ee6a2a113b69c69f2945e516098911c705d4912fc72b",
+    "ordered_customer_ids_sha256": "a7e9cccd94394bb59dfa0e35f33f27b8a1633c319a25f28dd7354e7c92c579e6",
+    "preprocessing": {
+      "version": "shared-8e4baaab93a6",
+      "representation": "scaled_features",
+      "function": "preprocessing.feature_scaling.load_customer_features",
+      "code_sha256": "8e4baaab93a623286deea1b9f76c5e7975cc52acf18cb5e7cc7b4bdc6b5b3a98",
+      "scaler": "StandardScaler",
+      "log1p_columns": [
+        "Frequency",
+        "Monetary",
+        "AvgOrderValue",
+        "ProductDiversity"
+      ],
+      "scikit_learn": "1.6.1"
+    }
+  },
+  "features": [
+    "Recency",
+    "Frequency",
+    "Monetary",
+    "AvgOrderValue",
+    "ProductDiversity",
+    "ActiveDays"
+  ],
+  "code_sha256": {
+    "compare_runs.py": "f6a83eb2319c0fb02e038936c333ba24c73f15258a50573c023db6562b70f562",
+    "analysis/compare_clusters.py": "337632531054467692219cfff5694c5d41fc12140c9b926f2f2bec24d48ed692"
+  }
+}

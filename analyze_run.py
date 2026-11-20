@@ -49,12 +49,16 @@ def analyze_run(experiment, run_id, output, matrix_input=None):
         boundary_column = "ProbabilityGap"
         representative_column, ascending = "HighestProbability", False
     elif algorithm == "kmeans":
-        path = Path(matrix_input) if matrix_input is not None else ROOT / "data" / manifest["input"]["input_filename"]
+        snapshot = manifest.get("model_input")
+        path = (Path(matrix_input) if matrix_input is not None else
+                experiment / snapshot["filename"] if snapshot else
+                ROOT / "data" / manifest["input"]["input_filename"])
         if not path.exists():
             raise ValueError("The original model-input CSV is needed; pass --matrix-input without redoing preprocessing")
-        if file_hash(path) != manifest["input"]["input_sha256"]:
+        expected_hash = snapshot["sha256"] if snapshot else manifest["input"]["input_sha256"]
+        if file_hash(path) != expected_hash:
             raise ValueError("Model-input CSV differs from the matrix used to fit this run")
-        matrix = pd.read_csv(path, dtype={"CustomerID": "string"})
+        matrix = pd.read_csv(path, dtype={"CustomerID": "string"}, float_precision="round_trip")
         centers_path = run / "centers.csv"
         centers = pd.read_csv(centers_path)
         assignments = kmeans_boundaries(assignments, matrix, centers, record["task"]["features"])

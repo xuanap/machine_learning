@@ -1,6 +1,6 @@
 # 客户画像与边界客户分析
 
-此阶段完成分析工具，正式客户画像结论仍等待 C 的统一处理和正式实验。工具读取已保存结果，不重新拟合模型，也不自行标准化。
+此阶段完成分析工具，当前全客户基线已完成，结果见 docs/a_experiment_results.md。工具读取已保存结果，不重新拟合模型，也不自行标准化。
 
 ## 运行方式
 
@@ -11,7 +11,7 @@
 .venv\Scripts\python analyze_run.py --experiment results/smoke/a_framework_check_v2 --run-id 001_gmm_seed42
 ```
 
-正式运行后，把 --experiment 换成实际正式结果目录、--run-id 换成实际运行编号。如果 K-means 使用的 C 处理后 CSV 不在 data/ 下，应追加 --matrix-input 实际路径。
+正式运行后，把 --experiment 换成实际正式结果目录、--run-id 换成实际运行编号。新实验自动读取实验目录中的 model_input.csv；只有没有该快照的旧版结果才需要用 --matrix-input 指定原拟合 CSV。
 
 该 CSV 必须与拟合时的文件哈希一致；距离只能在模型实际使用的坐标里计算，不能拿原始金额/天数去和标准化后的中心相减。
 

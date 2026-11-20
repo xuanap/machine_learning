@@ -1,0 +1,1 @@
+Full-customer prepared-input study. Metric provider: full_euclidean_matches_C_spectral_current. Group approval and timing comparability must not be inferred from this run.

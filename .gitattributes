@@ -1,5 +1,8 @@
 # Keep manifest hashes stable across Windows and Unix checkouts.
 * text=auto eol=lf
+# Preserve the exact bytes referenced by data and experiment manifests.
+data/** -text
+results/** -text
 *.png binary
 *.xlsx binary
 *.gz binary

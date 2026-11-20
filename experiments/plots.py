@@ -63,8 +63,8 @@ def plot_summary(table, destination, mode):
                 axis.set_xlim(min(coordinates) - padding, max(coordinates) + padding)
             else:
                 axis.set_xlim(-.4, max(len(categories) - 1, 0) + .4)
-            axis.set_ylabel("Fit time (seconds)" if metric == "fit_seconds" else "Silhouette (local reference)")
-            prefix = "SMOKE ONLY - raw diagnostic data" if mode == "smoke" else "Prepared input - local metric protocol"
+            axis.set_ylabel("Fit time (seconds)" if metric == "fit_seconds" else "Silhouette")
+            prefix = "SMOKE ONLY - raw diagnostic data" if mode == "smoke" else "Prepared input - recorded metric protocol"
             axis.set_title(f"{prefix}\n{study}")
             axis.grid(alpha=.2)
             axis.margins(y=.25)

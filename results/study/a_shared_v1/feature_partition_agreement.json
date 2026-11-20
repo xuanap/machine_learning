@@ -1,0 +1,80 @@
+[
+  {
+    "algorithm": "gmm",
+    "seed": 0,
+    "customers": 4338,
+    "left_clusters": 4,
+    "right_clusters": 4,
+    "ari": 0.5589324829679275,
+    "nmi": 0.5394450833065011,
+    "matched_customers": 3011,
+    "matched_overlap_fraction": 0.694098662978331,
+    "unmatched_right_clusters": [],
+    "interpretation": "Partition agreement, not accuracy or real customer behavior change. One-to-one matching may leave split clusters unmatched."
+  },
+  {
+    "algorithm": "gmm",
+    "seed": 42,
+    "customers": 4338,
+    "left_clusters": 4,
+    "right_clusters": 4,
+    "ari": 0.5590246209361179,
+    "nmi": 0.5390756382129223,
+    "matched_customers": 3010,
+    "matched_overlap_fraction": 0.6938681420009221,
+    "unmatched_right_clusters": [],
+    "interpretation": "Partition agreement, not accuracy or real customer behavior change. One-to-one matching may leave split clusters unmatched."
+  },
+  {
+    "algorithm": "gmm",
+    "seed": 2026,
+    "customers": 4338,
+    "left_clusters": 4,
+    "right_clusters": 4,
+    "ari": 0.5453850082086986,
+    "nmi": 0.5424117242050381,
+    "matched_customers": 2972,
+    "matched_overlap_fraction": 0.6851083448593822,
+    "unmatched_right_clusters": [],
+    "interpretation": "Partition agreement, not accuracy or real customer behavior change. One-to-one matching may leave split clusters unmatched."
+  },
+  {
+    "algorithm": "kmeans",
+    "seed": 0,
+    "customers": 4338,
+    "left_clusters": 4,
+    "right_clusters": 4,
+    "ari": 0.41975386275236143,
+    "nmi": 0.5453876442492058,
+    "matched_customers": 2978,
+    "matched_overlap_fraction": 0.6864914707238359,
+    "unmatched_right_clusters": [],
+    "interpretation": "Partition agreement, not accuracy or real customer behavior change. One-to-one matching may leave split clusters unmatched."
+  },
+  {
+    "algorithm": "kmeans",
+    "seed": 42,
+    "customers": 4338,
+    "left_clusters": 4,
+    "right_clusters": 4,
+    "ari": 0.4123219695733936,
+    "nmi": 0.5411290635765112,
+    "matched_customers": 2926,
+    "matched_overlap_fraction": 0.6745043798985708,
+    "unmatched_right_clusters": [],
+    "interpretation": "Partition agreement, not accuracy or real customer behavior change. One-to-one matching may leave split clusters unmatched."
+  },
+  {
+    "algorithm": "kmeans",
+    "seed": 2026,
+    "customers": 4338,
+    "left_clusters": 4,
+    "right_clusters": 4,
+    "ari": 0.41613031075945917,
+    "nmi": 0.5439515848796858,
+    "matched_customers": 2952,
+    "matched_overlap_fraction": 0.6804979253112033,
+    "unmatched_right_clusters": [],
+    "interpretation": "Partition agreement, not accuracy or real customer behavior change. One-to-one matching may leave split clusters unmatched."
+  }
+]

@@ -1,0 +1,9 @@
+﻿study,algorithm,factor,value,metric,planned_runs,valid_runs,non_ok_runs,unavailable_metric_runs,mean,std
+feature_ablation,kmeans,feature_set,RFM,silhouette,3,3,0,0,0.3796520959711291,0.00020428608635030478
+feature_ablation,kmeans,feature_set,RFM,fit_seconds,3,3,0,0,0.03536863333283691,0.0013510862188873248
+feature_ablation,gmm,feature_set,RFM,silhouette,3,3,0,0,0.08515512131594168,0.00028738322832449147
+feature_ablation,gmm,feature_set,RFM,fit_seconds,3,3,0,0,0.176504633333631,0.009720342623136884
+feature_ablation,kmeans,feature_set,six_features,silhouette,3,3,0,0,0.25044487512820585,0.0006977737846545306
+feature_ablation,kmeans,feature_set,six_features,fit_seconds,3,3,0,0,0.04193419999986266,0.006073862218029734
+feature_ablation,gmm,feature_set,six_features,silhouette,3,3,0,0,0.10603226822533629,0.004604004073147242
+feature_ablation,gmm,feature_set,six_features,fit_seconds,3,3,0,0,0.15037963333331086,0.02067560152290361
