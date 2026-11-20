@@ -1,0 +1,10 @@
+{
+  "row_count_reconciles": true,
+  "ledger_reconciles": true,
+  "customer_id_unique": true,
+  "features_finite": true,
+  "feature_customer_coverage": true,
+  "monetary_reconciles": true,
+  "valid_feature_ranges": true,
+  "invoice_has_one_customer": true
+}

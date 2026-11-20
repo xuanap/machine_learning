@@ -1,0 +1,70 @@
+{
+  "data_version": "online-retail-six-features-v1",
+  "config": {
+    "data_version": "online-retail-six-features-v1",
+    "input": "data/Online Retail.xlsx",
+    "duplicate_policy": "drop_exact",
+    "analysis_date": null,
+    "scope": "all_countries_positive_purchases",
+    "transform": "none"
+  },
+  "input_filename": "Online Retail.xlsx",
+  "input_sha256": "43465a06f2ccf7c8b5bd2892bc7defb52f97487934fe93b16ae4c3936424676d",
+  "analysis_date": "2011-12-10",
+  "purchase_date_min": "2010-12-01 08:26:00",
+  "purchase_date_max": "2011-12-09 12:50:00",
+  "raw_rows": 541909,
+  "cleaned_rows": 392692,
+  "excluded_rows": 149217,
+  "customers": 4338,
+  "invoices": 18532,
+  "total_monetary_gbp": 8887208.894,
+  "feature_columns": [
+    "Recency",
+    "Frequency",
+    "Monetary",
+    "AvgOrderValue",
+    "ProductDiversity",
+    "ActiveDays"
+  ],
+  "identifier_column": "CustomerID",
+  "customer_order": "CustomerID ascending as text",
+  "scope_notes": [
+    "all countries",
+    "positive purchases; refunds are not netted against original purchases",
+    "exact original eight-column duplicates removed unless duplicate_policy=keep",
+    "no monetary outlier trimming",
+    "no log1p, standardization, or PCA",
+    "non-product and service StockCode values retained; ProductDiversity counts all retained codes"
+  ],
+  "environment": {
+    "python": "3.12.2",
+    "pandas": "3.0.1",
+    "numpy": "2.3.5",
+    "openpyxl": "3.1.5"
+  },
+  "code_sha256": {
+    "prepare_data.py": "00cda7236db14db69f2ad208b35e1508d6ef752635848c1fc884f85d8b4acf45",
+    "preprocessing/data_cleaning.py": "30e0f1439234b84e547d520da9949724e9a4dc4a44b87b67f5e7a96191adb29e",
+    "preprocessing/feature_engineering.py": "ad03f392348d7edc31cbe32d523e7dd4b62c11cb9b69f78bcf53415aad828194",
+    "preprocessing/diagnostics.py": "e5e1168ab87f861afdc2a9db865bf1857891f2fdf43c4bfa369d5236a07729c1"
+  },
+  "files": {
+    "data/cleaned_data.csv": {
+      "sha256": "57af4fc2c06ac17850f0308ba2b6a466d3c1eef99d0d1add9425ae63ea12318e",
+      "bytes": 41125079
+    },
+    "data/customer_features.csv": {
+      "sha256": "d031d6b722ae83bf3159a898ede727daa8004a6043acc342dfa87f2609e34013",
+      "bytes": 160351
+    },
+    "data/customer_dates.csv": {
+      "sha256": "279f7a9763fe7e04b974af397184e3c66ff3c6d8532a23f9e4361f6eff58603a",
+      "bytes": 121513
+    },
+    "data/excluded_rows.csv.gz": {
+      "sha256": "ffca6b53181b75c4bf065552fd4aa3f84eb97263221558a0388f8e764b7e7ed2",
+      "bytes": 2658764
+    }
+  }
+}

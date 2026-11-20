@@ -1,0 +1,11 @@
+﻿rule,rows_before,removed_rows,rows_after
+missing_customer_id,541909,135080,406829
+invalid_customer_id,406829,0,406829
+missing_invoice_or_stock_code,406829,0,406829
+invalid_invoice_date,406829,0,406829
+invalid_quantity_or_price,406829,0,406829
+cancelled_invoice,406829,8905,397924
+nonpositive_quantity,397924,0,397924
+nonpositive_unit_price,397924,40,397884
+nonfinite_line_amount,397884,0,397884
+exact_duplicate,397884,5192,392692

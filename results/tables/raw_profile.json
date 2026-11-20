@@ -1,0 +1,28 @@
+{
+  "rows": 541909,
+  "columns": [
+    "InvoiceNo",
+    "StockCode",
+    "Description",
+    "Quantity",
+    "InvoiceDate",
+    "UnitPrice",
+    "CustomerID",
+    "Country"
+  ],
+  "missing_values": {
+    "InvoiceNo": 0,
+    "StockCode": 0,
+    "Description": 1454,
+    "Quantity": 0,
+    "InvoiceDate": 0,
+    "UnitPrice": 0,
+    "CustomerID": 135080,
+    "Country": 0
+  },
+  "exact_duplicate_rows_beyond_first": 5268,
+  "distinct_customer_ids_nonmissing": 4372,
+  "invoice_date_min": "2010-12-01 08:26:00",
+  "invoice_date_max": "2011-12-09 12:50:00",
+  "cancelled_rows_before_other_filters": 9288
+}

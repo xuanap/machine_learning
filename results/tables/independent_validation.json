@@ -1,0 +1,116 @@
+{
+  "status": "passed",
+  "checks": [
+    {
+      "check": "sha256:data/cleaned_data.csv",
+      "passed": true
+    },
+    {
+      "check": "sha256:data/customer_features.csv",
+      "passed": true
+    },
+    {
+      "check": "sha256:data/customer_dates.csv",
+      "passed": true
+    },
+    {
+      "check": "sha256:data/excluded_rows.csv.gz",
+      "passed": true
+    },
+    {
+      "check": "all_transactions_positive_and_finite",
+      "passed": true
+    },
+    {
+      "check": "line_amounts_recomputed_with_decimal",
+      "passed": true
+    },
+    {
+      "check": "cleaned_row_count",
+      "passed": true
+    },
+    {
+      "check": "excluded_row_count",
+      "passed": true
+    },
+    {
+      "check": "kept_excluded_disjoint",
+      "passed": true
+    },
+    {
+      "check": "every_source_row_accounted_for",
+      "passed": true
+    },
+    {
+      "check": "exact_feature_schema",
+      "passed": true
+    },
+    {
+      "check": "every_customer_and_all_six_features_recomputed",
+      "passed": true
+    },
+    {
+      "check": "unique_sorted_customer_order",
+      "passed": true
+    },
+    {
+      "check": "total_monetary_reconciles",
+      "passed": true
+    },
+    {
+      "check": "manifest_monetary_reconciles",
+      "passed": true
+    }
+  ],
+  "checked_customers": 4338,
+  "checked_transactions": 392692,
+  "exact_total_monetary_gbp": "8887208.8940",
+  "tolerance_gbp": "0.000001",
+  "sample_recalculations": [
+    {
+      "CustomerID": "12346",
+      "Recency": "326",
+      "Frequency": "1",
+      "Monetary": "77183.600",
+      "AvgOrderValue": "77183.600",
+      "ProductDiversity": "1",
+      "ActiveDays": "0"
+    },
+    {
+      "CustomerID": "12347",
+      "Recency": "3",
+      "Frequency": "7",
+      "Monetary": "4310.000",
+      "AvgOrderValue": "615.7142857142857142857142857",
+      "ProductDiversity": "103",
+      "ActiveDays": "365"
+    },
+    {
+      "CustomerID": "12348",
+      "Recency": "76",
+      "Frequency": "4",
+      "Monetary": "1797.240",
+      "AvgOrderValue": "449.310",
+      "ProductDiversity": "22",
+      "ActiveDays": "283"
+    },
+    {
+      "CustomerID": "12349",
+      "Recency": "19",
+      "Frequency": "1",
+      "Monetary": "1757.550",
+      "AvgOrderValue": "1757.550",
+      "ProductDiversity": "73",
+      "ActiveDays": "0"
+    },
+    {
+      "CustomerID": "12350",
+      "Recency": "311",
+      "Frequency": "1",
+      "Monetary": "334.400",
+      "AvgOrderValue": "334.400",
+      "ProductDiversity": "17",
+      "ActiveDays": "0"
+    }
+  ]
+}
