@@ -1,0 +1,93 @@
+{
+  "mode": "smoke",
+  "suite": "all",
+  "input": {
+    "input_filename": "customer_features.csv",
+    "input_sha256": "d031d6b722ae83bf3159a898ede727daa8004a6043acc342dfa87f2609e34013",
+    "source_features_sha256": "d031d6b722ae83bf3159a898ede727daa8004a6043acc342dfa87f2609e34013",
+    "data_version": "online-retail-six-features-v1",
+    "feature_columns": [
+      "Recency",
+      "Frequency",
+      "Monetary",
+      "AvgOrderValue",
+      "ProductDiversity",
+      "ActiveDays"
+    ],
+    "original_input_rows": 4338,
+    "preprocessing": "none applied by A; diagnostic input only",
+    "sample_seed": 17,
+    "notice": "SMOKE TEST ONLY: no model-quality conclusions or best-parameter selection",
+    "used_rows": 300,
+    "ordered_customer_ids_sha256": "867a9e1cbb83a46984021a6951f0f9d17f2e791608177a53fc4c936a7c71cdc0"
+  },
+  "config": {
+    "seeds": [
+      42
+    ],
+    "threads": 1,
+    "baseline_k": 3,
+    "k_values": [
+      2,
+      3
+    ],
+    "kmeans": {
+      "init": "k-means++",
+      "n_init": 2,
+      "max_iter": 100
+    },
+    "gmm": {
+      "covariance_type": "full",
+      "n_init": 2,
+      "max_iter": 100,
+      "reg_covar": 1e-06
+    },
+    "kmeans_initializations": [
+      "random",
+      "k-means++"
+    ],
+    "gmm_covariance_types": [
+      "full",
+      "tied",
+      "diag",
+      "spherical"
+    ],
+    "feature_sets": {
+      "RFM": [
+        "Recency",
+        "Frequency",
+        "Monetary"
+      ],
+      "six_features": [
+        "Recency",
+        "Frequency",
+        "Monetary",
+        "AvgOrderValue",
+        "ProductDiversity",
+        "ActiveDays"
+      ]
+    }
+  },
+  "metrics_provider": "A_reference_pending_C",
+  "timing": "estimator.fit only, including estimator initialization; excludes prediction, metrics, file I/O and plotting",
+  "threads": 1,
+  "environment": {
+    "python": "3.12.14",
+    "numpy": "2.3.5",
+    "pandas": "3.0.1",
+    "scipy": "1.18.1",
+    "scikit-learn": "1.9.1"
+  },
+  "code_sha256": {
+    "main.py": "68e6b0abeb83a0dce9de19c6105c6897751dcb8f36a63449a9692cc864f969ed",
+    "algorithms/__init__.py": "5880ccdd469b78613d20dd60757fcf113a6d7d44ddc1b53cb5b27970cd6effcf",
+    "algorithms/common.py": "ae738a86aa5e1899139f833a4cf3881cc915e6ee6c42d1ca1eaae216ce804020",
+    "algorithms/gmm.py": "b5edb34f83cb69a285e49113aa05a29effeaf955a0ea62193621129f983a7496",
+    "algorithms/kmeans.py": "54910f33dcab635efe06154656e33c1b932bcbbb7f6689f63d7a9900c5bdad48",
+    "experiments/__init__.py": "a62da7ffd55fc2d891b90e69b9e1f47c2cf9a3e3d29cf6f02f3666e9a2ae8856",
+    "experiments/inputs.py": "bb2d78272d44d76900c3c3320d50946c50074937355b6865ed2abf72878f22b3",
+    "experiments/plots.py": "57c3cb4d7010d8e1f92e01479180afdac5ed0e0f5ab6724ed8f4e63af9baae69",
+    "experiments/reference_metrics.py": "2a1850b1bcbd73110630bc36a25a1b46d0d12d292b51407f38a4d26fe3d60f22",
+    "experiments/runner.py": "9ab41d763abe1c06db80d76092d8b2aba715801c73b320f2ec1a1ffa4b77b544"
+  }
+}

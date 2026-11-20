@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+.venv/
+.cache/
+.pytest_cache/
+delivery/
+tmp/
+output/
+docs/personal_report*
+docs/presentation_*
+docs/a_methods.md
+tools/build_report_pdf.py

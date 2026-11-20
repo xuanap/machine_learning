@@ -1,0 +1,14 @@
+{
+  "seeds": [42],
+  "threads": 1,
+  "baseline_k": 3,
+  "k_values": [2, 3],
+  "kmeans": {"init": "k-means++", "n_init": 2, "max_iter": 100},
+  "gmm": {"covariance_type": "full", "n_init": 2, "max_iter": 100, "reg_covar": 0.000001},
+  "kmeans_initializations": ["random", "k-means++"],
+  "gmm_covariance_types": ["full", "tied", "diag", "spherical"],
+  "feature_sets": {
+    "RFM": ["Recency", "Frequency", "Monetary"],
+    "six_features": ["Recency", "Frequency", "Monetary", "AvgOrderValue", "ProductDiversity", "ActiveDays"]
+  }
+}

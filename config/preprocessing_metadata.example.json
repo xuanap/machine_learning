@@ -1,0 +1,13 @@
+{
+  "data_version": "online-retail-six-features-v1",
+  "source_features_sha256": "d031d6b722ae83bf3159a898ede727daa8004a6043acc342dfa87f2609e34013",
+  "prepared_csv_sha256": "REPLACE_WITH_SHA256_OF_CS_PREPARED_CSV",
+  "feature_columns": ["Recency", "Frequency", "Monetary", "AvgOrderValue", "ProductDiversity", "ActiveDays"],
+  "preprocessing": {
+    "version": "REPLACE_WITH_CS_PREPROCESSING_VERSION",
+    "representation": "scaled_features",
+    "scaler": "REPLACE_WITH_ACTUAL_SCALER_CLASS_NAME",
+    "log1p_columns": [],
+    "note": "Template only. C must declare the actual log1p columns, scaler, fitted parameters and saved transformer location. This file does not perform preprocessing."
+  }
+}

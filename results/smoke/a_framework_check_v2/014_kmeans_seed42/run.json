@@ -1,0 +1,77 @@
+{
+  "task": {
+    "algorithm": "kmeans",
+    "study": "feature_ablation",
+    "factor": "feature_set",
+    "value": "six_features",
+    "features": [
+      "Recency",
+      "Frequency",
+      "Monetary",
+      "AvgOrderValue",
+      "ProductDiversity",
+      "ActiveDays"
+    ],
+    "feature_set": "six_features",
+    "params": {
+      "init": "k-means++",
+      "n_init": 2,
+      "max_iter": 100,
+      "n_clusters": 3
+    },
+    "seed": 42
+  },
+  "fit": {
+    "algorithm": "kmeans",
+    "fit_seconds": 0.0011553000003914349,
+    "params": {
+      "algorithm": "lloyd",
+      "copy_x": true,
+      "init": "k-means++",
+      "max_iter": 100,
+      "n_clusters": 3,
+      "n_init": 2,
+      "random_state": 42,
+      "tol": 0.0001,
+      "verbose": 0
+    },
+    "seed": 42,
+    "status": "ok",
+    "n_iter": 2,
+    "converged": null,
+    "warnings": [],
+    "diagnostics": {
+      "inertia": 1666186249.345763,
+      "distinct_clusters": 3,
+      "iteration_limit_reached": false,
+      "threads": 1
+    }
+  },
+  "summary": {
+    "run_id": "014_kmeans_seed42",
+    "mode": "smoke",
+    "algorithm": "kmeans",
+    "study": "feature_ablation",
+    "factor": "feature_set",
+    "value": "six_features",
+    "feature_set": "six_features",
+    "seed": 42,
+    "samples": 300,
+    "features": 6,
+    "requested_params": "{\"init\": \"k-means++\", \"max_iter\": 100, \"n_clusters\": 3, \"n_init\": 2}",
+    "status": "ok",
+    "fit_seconds": 0.0011553000003914349,
+    "n_iter": 2,
+    "converged": null,
+    "warning_count": 0,
+    "inertia": 1666186249.345763,
+    "distinct_clusters": 3,
+    "iteration_limit_reached": false,
+    "threads": 1,
+    "silhouette": 0.9574627062648604,
+    "davies_bouldin": 0.1565375285864887,
+    "calinski_harabasz": 2681.190604276866,
+    "silhouette_samples": 300,
+    "metric_note": ""
+  }
+}

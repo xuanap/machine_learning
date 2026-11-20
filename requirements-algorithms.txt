@@ -1,0 +1,2 @@
+# Use the shared repository dependency versions for all algorithms.
+-r requirements.txt

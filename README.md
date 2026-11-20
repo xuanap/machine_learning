@@ -2,7 +2,7 @@
 
 数据版本：`online-retail-six-features-v1`。
 
-这份交付完成 A 负责的原始数据清洗和客户特征构建。算法实验尚未开展。
+公共数据清洗和六特征构建已完成。A 的 K-means/GMM 与实验分析工具已接入，C 的谱聚类见下文；五算法正式对比仍需统一预处理产物和评价协议。
 
 ## 直接使用哪些文件
 
@@ -110,3 +110,24 @@ Calinski–Harabasz 指标。耗时覆盖建图、谱分解和 K-means。
 RBF 图的存储开销随客户数平方增长。图的连通分量数超过 K 时，需增大邻居数
 或降低 RBF 的 gamma。簇编号可在不同运行之间置换。
 # machine_learning
+
+## A：K-means / GMM 与实验分析工具
+
+在项目根目录使用共享依赖安装并验证：
+
+```text
+python -m pip install -r requirements.txt
+python -m unittest discover -s tests -v
+python main.py --mode smoke --suite all
+```
+
+`smoke` 固定抽取 300 位客户，使用原始尺度特征，仅验证流程；输出在 `results/smoke/` 下新建目录，不能据此做正式模型选择。`results/smoke/a_framework_check_v2/` 是保留供测试的历史夹具，包含当时的代码与数据来源记录。
+
+- `algorithms/kmeans.py`、`algorithms/gmm.py`：直接接收 C 统一预处理后的矩阵，不再次标准化。
+- `main.py`、`experiments/`：基线、参数及特征消融实验，保存标签、中心、概率、状态和来源记录。
+- `analyze_run.py`、`analysis/`：原始尺度客户画像、边界客户分析。
+- `compare_runs.py`：按 CustomerID 对齐、簇匹配及 ARI/NMI 一致性分析。
+
+详见 [算法接口](docs/algorithm_interface.md)、[客户分析](docs/customer_analysis.md)、[分群比较](docs/cluster_comparison.md)和 [A 的接入说明](docs/a_handoff.md)。
+
+C 当前的 `run_spectral.py` 在运行中执行 log1p 和标准化；A 的正式入口需要另存的六特征矩阵及 `config/preprocessing_metadata.example.json` 所示元数据。指标实现、抽样与计时规则待统一，不把 A 的参考指标直接作为小组最终协议。
