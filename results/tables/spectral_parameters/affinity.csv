@@ -1,0 +1,3 @@
+affinity,n_neighbors,n_clusters,random_state,customers,status,runtime_seconds,silhouette,davies_bouldin,calinski_harabasz,silhouette_samples,metric_note,observed_clusters,smallest_cluster_share,cluster_sizes_ascending,note,gamma
+nearest_neighbors,20.00000000,2,42,4338,ok,0.32069408,0.32800949,1.15902197,2603.81605928,4338,,2,0.40963578,1777|2561,,
+rbf,,2,42,4338,ok,0.95512483,0.35528727,1.08296177,3081.04570076,4338,,2,0.47118488,2044|2294,,0.10000000

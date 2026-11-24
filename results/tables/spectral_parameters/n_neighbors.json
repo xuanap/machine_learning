@@ -1,0 +1,84 @@
+{
+  "step": "n_neighbors",
+  "input": {
+    "input_filename": "customer_features.csv",
+    "input_sha256": "d031d6b722ae83bf3159a898ede727daa8004a6043acc342dfa87f2609e34013",
+    "source_features_sha256": "d031d6b722ae83bf3159a898ede727daa8004a6043acc342dfa87f2609e34013",
+    "data_version": "online-retail-six-features-v1",
+    "feature_columns": [
+      "Recency",
+      "Frequency",
+      "Monetary",
+      "AvgOrderValue",
+      "ProductDiversity",
+      "ActiveDays"
+    ],
+    "original_input_rows": 4338,
+    "used_rows": 4338,
+    "matrix_sha256": "6b189d6c2efa834f13b302db1bcea39e9c98873f5b2ca8d166975b937a90e6f3",
+    "ordered_customer_ids_sha256": "a7e9cccd94394bb59dfa0e35f33f27b8a1633c319a25f28dd7354e7c92c579e6",
+    "preprocessing": {
+      "version": "shared-8e4baaab93a6",
+      "representation": "scaled_features",
+      "function": "preprocessing.feature_scaling.load_customer_features",
+      "code_sha256": "8e4baaab93a623286deea1b9f76c5e7975cc52acf18cb5e7cc7b4bdc6b5b3a98",
+      "scaler": "StandardScaler",
+      "log1p_columns": [
+        "Frequency",
+        "Monetary",
+        "AvgOrderValue",
+        "ProductDiversity"
+      ],
+      "scikit_learn": "1.6.1"
+    }
+  },
+  "cases": [
+    {
+      "affinity": "nearest_neighbors",
+      "n_neighbors": 5,
+      "n_clusters": 2
+    },
+    {
+      "affinity": "nearest_neighbors",
+      "n_neighbors": 10,
+      "n_clusters": 2
+    },
+    {
+      "affinity": "nearest_neighbors",
+      "n_neighbors": 15,
+      "n_clusters": 2
+    },
+    {
+      "affinity": "nearest_neighbors",
+      "n_neighbors": 20,
+      "n_clusters": 2
+    },
+    {
+      "affinity": "nearest_neighbors",
+      "n_neighbors": 30,
+      "n_clusters": 2
+    },
+    {
+      "affinity": "nearest_neighbors",
+      "n_neighbors": 50,
+      "n_clusters": 2
+    }
+  ],
+  "random_state": 42,
+  "threads": 1,
+  "timing": "spectral_clustering only",
+  "csv_sha256": "9a20d5c0325db4cac703326f84790954d1d49f8741d78a413b077a4e2f69a1b1",
+  "code_sha256": {
+    "experiments/parameter_analysis.py": "d053cb950055ded2c005adcc5077ee6f5b984dd960ef077eef16d3919ec12395",
+    "experiments/group_metrics.py": "5ccf1e734bb15103920dc48696d502788d4acf6386f0b2e35af7e2f3609abc33",
+    "algorithms/spectral.py": "9322edd954f38e379628853fea59872daa60271b40e1581e4184728eb5004d5e",
+    "experiments/inputs.py": "bbb6939a896c8719ce2704e286fbb39d1620dfb7d6c602465e991faa680ef73f"
+  },
+  "environment": {
+    "python": "3.12.2",
+    "numpy": "2.3.5",
+    "pandas": "3.0.1",
+    "scipy": "1.17.0",
+    "scikit_learn": "1.6.1"
+  }
+}
