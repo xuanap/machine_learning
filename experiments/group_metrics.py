@@ -16,3 +16,17 @@ def evaluate_full(X, labels):
                 "davies_bouldin": float(davies_bouldin_score(values, labels)),
                 "calinski_harabasz": float(calinski_harabasz_score(values, labels)),
                 "silhouette_samples": len(labels), "metric_note": ""}
+
+
+def evaluate_comparison(X, labels):
+    """Score assigned customers and report the coverage of those scores."""
+    values = np.asarray(X)
+    labels = np.asarray(labels)
+    assigned = labels != -1
+    coverage = float(assigned.mean())
+    return {
+        **evaluate_full(values[assigned], labels[assigned]),
+        "observed_clusters": len(np.unique(labels[assigned])),
+        "coverage": coverage,
+        "noise_count": int((~assigned).sum()),
+    }

@@ -1,0 +1,103 @@
+{
+  "input": [
+    "005_gmm_seed2026",
+    "formal",
+    "gmm",
+    "baseline",
+    "algorithm",
+    "gmm",
+    "six_features",
+    2026,
+    4338,
+    6,
+    "{\"covariance_type\": \"full\", \"max_iter\": 300, \"n_components\": 4, \"n_init\": 3, \"reg_covar\": 1e-06, \"tol\": 0.001}",
+    "ok",
+    0.1106277999970188,
+    16,
+    true,
+    0,
+    null,
+    4,
+    null,
+    1,
+    0.1113485142072996,
+    2.2362165997499317,
+    1286.7483114411027,
+    4338,
+    null,
+    -37571.4566728734,
+    -36863.81294812946,
+    4.3558908932339815,
+    "[0.26012926061238634, 0.3441678192715537, 0.19225449515905949, 0.20344842495700052]"
+  ],
+  "current_input": {
+    "input_filename": "customer_features.csv",
+    "input_sha256": "d031d6b722ae83bf3159a898ede727daa8004a6043acc342dfa87f2609e34013",
+    "source_features_sha256": "d031d6b722ae83bf3159a898ede727daa8004a6043acc342dfa87f2609e34013",
+    "data_version": "online-retail-six-features-v1",
+    "feature_columns": [
+      "Recency",
+      "Frequency",
+      "Monetary",
+      "AvgOrderValue",
+      "ProductDiversity",
+      "ActiveDays"
+    ],
+    "original_input_rows": 4338,
+    "used_rows": 4338,
+    "matrix_sha256": "6b189d6c2efa834f13b302db1bcea39e9c98873f5b2ca8d166975b937a90e6f3",
+    "ordered_customer_ids_sha256": "a7e9cccd94394bb59dfa0e35f33f27b8a1633c319a25f28dd7354e7c92c579e6",
+    "preprocessing": {
+      "version": "shared-8e4baaab93a6",
+      "representation": "scaled_features",
+      "function": "preprocessing.feature_scaling.load_customer_features",
+      "code_sha256": "8e4baaab93a623286deea1b9f76c5e7975cc52acf18cb5e7cc7b4bdc6b5b3a98",
+      "scaler": "StandardScaler",
+      "log1p_columns": [
+        "Frequency",
+        "Monetary",
+        "AvgOrderValue",
+        "ProductDiversity"
+      ],
+      "scikit_learn": "1.6.1"
+    }
+  },
+  "model_input": {
+    "filename": "model_input.csv",
+    "sha256": "994864675464d901b4333e64230cb634eef19d4205b0be7d5747a2364fa9a778",
+    "matrix_sha256": "a70d60d6d3f58b442336ee6a2a113b69c69f2945e516098911c705d4912fc72b"
+  },
+  "max_coordinate_difference": 2.220446049250313e-15,
+  "k": 4,
+  "seeds": [
+    0,
+    42,
+    2026
+  ],
+  "threads": 1,
+  "params": {
+    "kmeans": {
+      "init": "k-means++",
+      "n_init": 10,
+      "max_iter": 300,
+      "tol": 0.0001,
+      "n_clusters": 4
+    },
+    "gmm": {
+      "covariance_type": "full",
+      "n_init": 3,
+      "max_iter": 300,
+      "tol": 0.001,
+      "reg_covar": 1e-06,
+      "n_components": 4
+    },
+    "spectral": {
+      "n_clusters": 4,
+      "affinity": "rbf",
+      "gamma": 0.1
+    }
+  },
+  "archive_summary_sha256": "315b3ac3a2c538c8184173d5ea9ec2f6205cfe20b27d602884382645866e47f5",
+  "timing": "wall time around cluster(), including validation, fit and label generation",
+  "noise_policy": "exclude -1 from internal scores; report coverage and observed cluster count"
+}
