@@ -1,0 +1,15 @@
+{
+  "detail_rows": 392692,
+  "orders": 18532,
+  "customers": 4338,
+  "positive_sales_gbp": 8887208.894000001,
+  "single_order_customers": 1493,
+  "single_order_fraction": 0.3441678192715537,
+  "gini": 0.7157897322762443,
+  "incomplete_months": [
+    "2011-12"
+  ],
+  "order_amount_median": 302.575,
+  "order_amount_p99": 3847.793799999987,
+  "order_amount_max": 168469.6
+}

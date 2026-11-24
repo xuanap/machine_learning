@@ -1,0 +1,2 @@
+﻿Cluster,Customers,CustomerShare,PositiveSalesGBP,PositiveSalesShare,CustomersWithCancellation,CancellationAmountAbs,Recency_mean,Recency_median,Frequency_mean,Frequency_median,Monetary_mean,Monetary_median,AvgOrderValue_mean,AvgOrderValue_median,ProductDiversity_mean,ProductDiversity_median,ActiveDays_mean,ActiveDays_median
+-1,32,0.0073766712770862147,1397521.4199999999,0.15725088007591509,21,354677.72999999998,78.28125,20,31.28125,3,43672.544374999998,11131.290000000001,7763.4235662033125,2710.8400000000001,269.25,26,192.90625,198.5

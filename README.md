@@ -138,3 +138,47 @@ A 的正式入口已直接调用 C 的共享预处理函数，无需额外 CSV �
 `customer_ids, X`，再将同一个 `X` 传入各算法。原始尺度特征表也可用于客户画像。
 
 本轮 A 的实验：4,338 位客户、三个种子，共 78 次均正常完成；结果位于 results/formal/，汇总在 results/study/a_shared_v1/，详见 [实验结果与限制](docs/a_experiment_results.md)。42 项测试通过。复现汇总可运行 `python tools/summarize_a_study.py --output 新的输出目录`，不会重新拟合模型。
+
+## B：消费探索、层次聚类与 DBSCAN
+
+`run_b.py` 使用现有清洗数据和原始六特征，支持分步运行；每次在 `results/b/`
+下新建目录，不覆盖历史实验。两种聚类只加载一次 C 的共享预处理函数，使用同一个
+六维矩阵，不抽样、不再次标准化、不使用 PCA 坐标。运行前按 `requirements.txt`
+安装锁定版本（入口会核对依赖版本）。请使用稳定版 Python（建议 3.12，3.13
+正式版也可），不要使用 a/b/rc 预览版。例如在 Windows 的独立虚拟环境中运行：
+
+```text
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe run_b.py --mode eda
+.\.venv\Scripts\python.exe run_b.py --mode clustering
+.\.venv\Scripts\python.exe run_b.py --mode all
+.\.venv\Scripts\python.exe -m unittest discover -s tests -v
+```
+
+可追加 `--output results/b/新的目录名`。`eda/` 包含按 CustomerID + InvoiceNo
+汇总的订单表、月度明细行数/订单数/销售额及缺月标记、单次购买比例、集中度、六特征
+描述统计、原始与对数视图、Pearson/Spearman 矩阵及取消核查表。金额均为正向交易额。
+
+`clustering/hierarchical/` 保存 Ward/Complete/Average、K=2..8 的参数汇总、
+逐客户标签、全量链接树和截断显示的树状图；`ward_k4/` 保存先运行的四簇基线画像。
+`dbscan/` 保存含自身的近邻距离、30 组参数的全量扫描、全部标签和选参依据；
+`dbscan_selected/` 包含所选参数画像及单列的噪声组原始统计。画像提供原始尺度
+六特征的 count/mean/std/min/25%/50%/75%/max，并关联取消统计。
+
+DBSCAN 的 -1 始终保留，内部指标仅在非噪声客户上精确计算；有效簇不足两个时
+保存空值及原因。`comparison_common_customers.csv` 在同一批 DBSCAN 非噪声客户
+上复算 Ward 四簇与 DBSCAN 的分数，并另列两种算法的原始覆盖率。
+中文结论见每次输出的 `experiment_report_zh.txt`，来源、环境和输出哈希见
+`manifest.json`，精确拟合坐标见 `clustering/model_input.npy`。
+运行后可用 `.\.venv\Scripts\python.exe tools/verify_b_run.py results/b/本次目录`
+核验保存文件、所有标签人数/覆盖率、原始尺度画像及共同客户分数，结果写入该目录的
+`verification.json`；核验不重新拟合模型。
+
+C 可调用 `algorithms.hierarchical.fit_predict` 与 `algorithms.dbscan.fit_predict`，
+签名与 A 相同：`fit_predict(X, params=None, random_state=42, threads=1)`，
+返回已有的 `ClusteringResult`。层次参数为 `n_clusters`、`linkage`；DBSCAN 参数为
+`eps`、`min_samples`，距离均为 Euclidean。`centers` 为非噪声簇的输入空间均值，
+并非 DBSCAN 拟合中心；两种算法确定性运行，随机种子仅为接口兼容保留。
+只需标签时可用 `hierarchical_clustering(X, n_clusters=4, linkage="ward")`
+或 `dbscan_clustering(X, eps=0.65, min_samples=10)`，标签顺序与输入完全一致。
+接口不会转换或缩放 X，也不将 CustomerID 或取消诊断列加入特征。

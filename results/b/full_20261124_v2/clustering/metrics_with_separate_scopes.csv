@@ -1,0 +1,3 @@
+﻿algorithm,scope,effective_clusters,cluster_sizes,min_cluster_size,max_cluster_size,coverage,noise_fraction,noise_customers,evaluated_customers,metrics_available,silhouette,davies_bouldin,calinski_harabasz,silhouette_samples,metric_note
+ward_k4,all_customers,4,"{""0"": 1158, ""1"": 1195, ""2"": 921, ""3"": 1064}",921,1195,1,0,0,4338,True,0.18821303360427219,1.5515500045785517,1717.2740146012841,4338,
+dbscan_selected,non_noise_customers,2,"{""-1"": 32, ""0"": 4302, ""1"": 4}",4,4302,0.99262332872291381,0.0073766712770862147,32,4306,True,0.53109597417202681,0.43928317944542616,33.391555295394824,4306,

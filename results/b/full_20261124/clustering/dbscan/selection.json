@@ -1,0 +1,7 @@
+{
+  "run_id": "eps1.25_min5",
+  "eps": 1.25,
+  "min_samples": 5,
+  "stage": "relaxed_cluster_size",
+  "rule": "Prefer >=2 clusters, coverage>=0.80 and smallest non-noise cluster >=max(20,ceil(0.005*n)); rank by silhouette, then coverage, then eps/min_samples ascending. If empty, relax cluster size, then coverage (ranking coverage first); if no valid metrics, show maximum coverage descriptively."
+}
