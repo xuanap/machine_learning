@@ -44,8 +44,9 @@ python -m experiments.parameter_analysis --step affinity
 
 ## 3. 邻居数量 n_neighbors
 
-固定 K=2 和 kNN 构造，扫描 5、10、15、20、30、50 个邻居。
-这组取值覆盖较稀疏到较密的局部连接，保留 20 作为对照点。
+固定 K=2 和 kNN 构造，先扫描 5、10、15、20、30、50 个邻居。50 位于初筛的上边界，
+因此扩展到 40、60、80、100、150、200，再补测 250、300、400、600。
+保留全部原始取值，20 仍作为与相似度实验对齐的对照点。
 
 ```bash
 python -m experiments.parameter_analysis --step n_neighbors
@@ -74,7 +75,7 @@ python -m experiments.parameter_analysis --step all
 
 默认输出到 `results/tables/spectral_parameters/`。可追加
 `--output-dir results/reproduction/spectral_parameters` 将复跑结果另存。
-四张表分别应有 18、2、6、6 行。每个成功配置的簇人数之和应为 4,338。
+四张表分别应有 18、2、16、6 行。每个成功配置的簇人数之和应为 4,338。
 同名 JSON 记录实际数据和矩阵哈希、代码哈希、参数及软件版本。
 复查指标时先对齐数据和代码版本，再比对分数和人数。耗时受运行环境影响，
 适合按同机重复计时后再做严格速度比较。
@@ -84,9 +85,42 @@ python -m experiments.parameter_analysis --step all
 1. 两种相似度构造在各自的 K 扫描中均以 K=2 取得三项内部指标最优。
 2. K=2 的基线比较中，RBF（gamma=0.1）的 Silhouette、DB、CH 分别为
    0.3553、1.0830、3081.05，kNN（20 个邻居）分别为 0.3280、1.1590、2603.82。
-3. kNN 在本次扫描范围内以 50 个邻居取得三项指标最优，Silhouette 为 0.3396，
-   两簇分别有 1,959 和 2,379 人。50 位于本次扫描的上边界。
+3. kNN 在初筛范围内以 50 个邻居取得三项指标最优，Silhouette 为 0.3396，
+   两簇分别有 1,959 和 2,379 人。50 位于初筛上边界，扩展结果见下节。
 4. RBF 的 gamma=0.5 取得最高 Silhouette（0.4946）和最低 DB（0.8347），
    但两簇规模为 10 和 4,328 人，CH 由 gamma=0.1 的 3081.05 降至 52.48。
    若目标是形成规模相近的客户分群，可优先保留 gamma=0.1，
    对应两簇为 2,044 和 2,294 人。该选择依据本轮指标与簇规模，尚需客户画像验证。
+
+## 从结果表绘图
+
+在项目根目录运行下列命令。绘图程序直接读取现有 CSV。
+
+```bash
+python -m experiments.plot_spectral_k
+python -m experiments.plot_spectral_parameters --step all
+```
+
+第二条命令生成相似度构造、邻居数、gamma 三张图，默认保存到 `results/figures/`。
+可用 `--step affinity`、`--step n_neighbors` 或 `--step gamma` 仅生成其中一张。
+橙色标出各指标在测试范围内的最优配置。最小簇占比用于观察簇规模，
+图中没有对它标记最佳值。通过 `--input-dir` 和 `--output-dir` 可指定输入与输出目录。
+
+## 邻居数量扩展与多种子复核
+
+```bash
+python -m experiments.parameter_analysis --step n_neighbors
+python -m experiments.parameter_analysis --step n_neighbors_seeds
+python -m experiments.plot_spectral_parameters --step n_neighbors
+```
+
+第一条命令在固定 K=2、种子 42 的条件下运行 16 个邻居数，写入
+`n_neighbors.csv`。第二条命令以 0、42、2026 三个种子复核
+150、200、250、300、400、600，写入 `n_neighbors_seeds.csv`。
+第三条命令用主扫描结果更新邻居数量折线图。
+
+初筛的 50 个邻居只是在当时测试的取值中领先。扩展后，50、200、600
+的 Silhouette 分别为 0.33963、0.35246、0.35300。600 在三项指标上仍居首，
+也仍是扫描上限，因此无法确认全局最优。200 到 600 的 Silhouette 只提高约
+0.00054，同轮算法耗时从约 0.68 秒增加到 1.37 秒。若需要兼顾得分和计算成本，
+可把 200 个邻居作为候选配置。

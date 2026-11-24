@@ -19,6 +19,8 @@ from experiments.inputs import ROOT, file_hash, load_input
 from experiments.runner import write_json
 
 
+NEIGHBOR_COUNTS = (5, 10, 15, 20, 30, 40, 50, 60, 80, 100, 150, 200, 250, 300, 400, 600)
+
 def designs():
     knn = {"affinity": "nearest_neighbors", "n_neighbors": 20}
     rbf = {"affinity": "rbf", "gamma": 0.1}
@@ -26,7 +28,7 @@ def designs():
         "k": [dict(base, n_clusters=k) for base in (knn, rbf) for k in range(2, 11)],
         "affinity": [dict(base, n_clusters=2) for base in (knn, rbf)],
         "n_neighbors": [
-            dict(knn, n_clusters=2, n_neighbors=n) for n in (5, 10, 15, 20, 30, 50)
+            dict(knn, n_clusters=2, n_neighbors=n) for n in NEIGHBOR_COUNTS
         ],
         "gamma": [
             dict(rbf, n_clusters=2, gamma=g) for g in (0.01, 0.025, 0.05, 0.1, 0.2, 0.5)
@@ -34,13 +36,13 @@ def designs():
     }
 
 
-def run_case(X, params):
-    row = dict(params, random_state=42, customers=len(X), status="ok")
+def run_case(X, params, seed=42):
+    row = dict(params, random_state=seed, customers=len(X), status="ok")
     with warnings.catch_warnings(record=True) as captured:
         warnings.simplefilter("always")
         start = perf_counter()
         try:
-            labels = spectral_clustering(X, **params, random_state=42)
+            labels = spectral_clustering(X, **params, random_state=seed)
         except (ValueError, ArpackNoConvergence) as error:
             return dict(row, status="failed", note=str(error))
         row["runtime_seconds"] = perf_counter() - start
@@ -56,23 +58,26 @@ def run_case(X, params):
 def main():
     studies = designs()
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--step", choices=["all", *studies], default="all")
+    parser.add_argument("--step", choices=["all", *studies, "n_neighbors_seeds"], default="all")
     parser.add_argument("--output-dir", type=Path,
                         default=ROOT / "results/tables/spectral_parameters")
     args = parser.parse_args()
     bundle = load_input("formal")
     X = bundle.matrix(bundle.provenance["feature_columns"])
+    if args.step == "n_neighbors_seeds":
+        studies[args.step] = [case for case in studies["n_neighbors"] if case["n_neighbors"] >= 150]
     selected = studies if args.step == "all" else {args.step: studies[args.step]}
     args.output_dir.mkdir(parents=True, exist_ok=True)
 
     with threadpool_limits(limits=1):
         for step, cases in selected.items():
-            rows = [run_case(X, params) for params in cases]
+            seeds = (0, 42, 2026) if step == "n_neighbors_seeds" else (42,)
+            rows = [run_case(X, params, seed) for params in cases for seed in seeds]
             path = args.output_dir / f"{step}.csv"
             pd.DataFrame(rows).to_csv(path, index=False, float_format="%.8f")
             write_json(path.with_suffix(".json"), {
                 "step": step, "input": bundle.provenance, "cases": cases,
-                "random_state": 42, "threads": 1,
+                "random_state": seeds[0] if len(seeds) == 1 else seeds, "threads": 1,
                 "timing": "spectral_clustering only",
                 "csv_sha256": file_hash(path),
                 "code_sha256": {
