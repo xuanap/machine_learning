@@ -1,6 +1,12 @@
 # 客户聚类五算法基准与综合分析
 
-[汇报图 PNG](../results/comparison/shared_five_algorithms/benchmark.png) · [完整数据 CSV](../results/comparison/shared_five_algorithms/benchmark.csv) · [三算法原报告](shared_three_algorithms_archive.md)
+## 汇报摘要
+
+C 组交付所需的五算法基准、同机计时、参数实验记录、PCA 对照、稳定性和谱聚类画像均已归档。在当前四簇基准中，K-means 的 Davies–Bouldin、Calinski–Harabasz 和耗时表现最好，谱聚类的 Silhouette 略高。DBSCAN 得到一个 4,302 人大簇和一个 4 人小簇，可用于探索异常和微型群体。
+
+[五算法性能热力图](../results/comparison/shared_five_algorithms/performance_heatmap.png) · [基准表 CSV](../results/comparison/shared_five_algorithms/benchmark.csv) · [同机耗时图](../results/comparison/shared_five_algorithms/timing/runtime.png) · [PCA 对照图](../results/comparison/shared_five_algorithms/pca/pca_comparison.png) · [谱聚类画像图](../results/comparison/shared_five_algorithms/spectral_profiles/profile_medians.png)
+
+## 实验一：五算法基础效果对比
 
 五种算法均使用 Online Retail 的 4,338 位客户和同一组六维建模坐标。四个偏态特征经 log1p 后，六维特征统一标准化。三算法归档实际使用的矩阵与 B 正式归档的 float64 矩阵 SHA-256 一致，源特征表指纹也一致。评分表由归档汇总生成。同机计时仅复跑固定基准配置。
 
@@ -18,6 +24,18 @@
 
 - K-means、GMM、谱聚类来自 C 的 [统一调用逐种子结果](../results/comparison/shared_three_algorithms/per_seed.csv) 和 [运行清单](../results/comparison/shared_three_algorithms/manifest.json)。K-means/GMM 的 [A 组正式基线](../results/formal/a_shared_baseline_v1/summary.csv) 保留为独立归档，其 fit 耗时采用 estimator.fit 边界。谱聚类采用 C 的 K=4 RBF 对照，独立的 [谱聚类参数探索](spectral_parameter_experiments.md) 保留其原配置与计时。
 - Ward 与 DBSCAN 来自 B 的 [正式运行清单](../results/b/full_20261124_v2/manifest.json)、[层次扫描](../results/b/full_20261124_v2/clustering/hierarchical/parameter_summary.csv) 和 [密度扫描](../results/b/full_20261124_v2/clustering/dbscan/parameter_summary.csv)。汇总脚本对照 B 清单校验两张扫描表的文件哈希。
+
+## 实验二：参数敏感性及基准选取
+
+| 算法 | 已归档的参数对照 | 对基准的解释 |
+|---|---|---|
+| K-means | K=2–8、两种初始化 | K=4 为统一细分粒度，K=2 在 A 组扫描中的几何评分更高。 |
+| GMM | 分量数 2–8、四类协方差 | 全协方差基线保留概率输出。A 组扫描中，内部几何评分和 BIC 偏好的配置不同。 |
+| 谱聚类 | K、相似度构造、RBF γ、kNN 邻居数 | 五算法对照用 K=4、γ=0.1。参数探索中，K=2 的几何指标更优，较高 γ 可伴随严重簇规模失衡。 |
+| Ward 等层次配置 | Ward、complete、average，K=2–8 | 主表用 Ward、K=4，切树粒度与其他四簇方案一致。 |
+| DBSCAN | 10 个 ε 与 3 个 min_samples 的组合 | 展示配置在放宽最小簇规模约束后选出，解读时需同时看有效簇数、覆盖率和簇规模。 |
+
+[A 组参数实验及特征消融](a_experiment_results.md) · [谱聚类参数实验](spectral_parameter_experiments.md) · [层次聚类扫描](../results/b/full_20261124_v2/clustering/hierarchical/parameter_summary.csv) · [DBSCAN 扫描](../results/b/full_20261124_v2/clustering/dbscan/parameter_summary.csv)
 
 ## 五算法同机计时
 
@@ -125,3 +143,11 @@ DBSCAN 虽有较高的 Silhouette 和较低的 Davies–Bouldin，但其 4,306 �
 [性能热力图](../results/comparison/shared_five_algorithms/performance_heatmap.png) · [绘图数据](../results/comparison/shared_five_algorithms/performance_heatmap_data.csv)
 
 在项目根目录执行 `python -m experiments.complete_c_deliverables` 可重新生成以上交付物。该命令仅重新拟合 PCA 两维固定基线，谱聚类画像和性能热力图复用已归档数据。
+
+
+## 验收范围与结论边界
+
+- 本报告比较当前数据集上的固定基准配置。随机稳定性覆盖三个预设种子，计时覆盖一台机器上的三次测量。若验收另要求证明跨数据集或部署环境的稳定性，需要新增数据或环境下的验证。
+- PCA 实验检验两维、保留原参数的效果。若目标是寻找各算法在降维空间中的最佳配置，需要独立调参，尤其应重新考察 DBSCAN 的 ε。
+- 当前 ARI 衡量分群间的一致程度。已有归档未提供可信的外部客户类别，外部 ARI/NMI 的评价条件尚不具备。
+- 截图中的实验三属于 A/B。已核到 A 组的 RFM 与六特征消融归档，B 组正式结果目录中未找到独立的特征组合消融归档。若验收覆盖全组且要求 B 两种算法也提交消融，这一项需向 B 核实或补齐。
