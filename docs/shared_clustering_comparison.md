@@ -84,3 +84,44 @@ Ward 的三项指标均弱于 K-means 和谱聚类，但四个簇分别含 1,158
 DBSCAN 虽有较高的 Silhouette 和较低的 Davies–Bouldin，但其 4,306 位已分群客户中有 4,302 人落在同一簇，另一簇仅 4 人，还有 32 位噪声客户。在同一 4,306 人子集上，Ward 的 Silhouette 为 0.1905、CH 为 1790.41，DBSCAN 分别为 0.5311 和 33.39。结合规模与覆盖率，这一配置适合探索异常和微型群体，四群运营细分可沿用 K-means 基线。
 
 在项目根目录执行 `python tools/summarize_five_algorithms.py` 可从同一批归档重新生成汇报图和 CSV。
+
+## 实验四：PCA 降维前后对照
+
+对同一份 4,338 人六维标准化矩阵拟合不白化的两维 PCA，PC1 和 PC2 分别解释 60.62% 和 18.55% 的方差，累计 **79.17%**。六维标签复用归档，两维标签通过同一接口按原基准参数拟合。三种随机算法沿用种子 0、42、2026，Ward 和 DBSCAN 各拟合一次。DBSCAN 的 ε 仍为 1.25，用于检验固定配置对表示改变的敏感性。
+
+汇报表将两组标签都放回原六维空间，在所有运行共同分簇的 4,306 位客户上评分。逐次明细还保留各自拟合空间中的原生评分，原生评分的距离与维度随表示而变。
+
+| 算法 | 六维 → PCA2：Silhouette ↑ | Davies–Bouldin ↓ | Calinski–Harabasz ↑ | 前后 ARI |
+|---|---:|---:|---:|---:|
+| K-means | 0.2535 → 0.2339 | 1.2804 → 1.3610 | 2160.04 → 2097.42 | 0.4164 |
+| GMM | 0.1081 → 0.2320 | 2.3516 → 1.3517 | 1314.25 → 2036.31 | 0.3950 |
+| 谱聚类 | 0.2578 → 0.2328 | 1.3359 → 1.3185 | 2062.05 → 2031.30 | 0.3784 |
+| Ward | 0.1905 → 0.2151 | 1.5445 → 1.3681 | 1790.41 → 1898.18 | 0.5385 |
+| DBSCAN | 0.5311 → — | 0.4393 → — | 33.39 → — | 0.0000 |
+
+随机算法表内为三个种子的均值。在共同空间中，GMM 和 Ward 三项指标均改善，K-means 三项均下降，谱聚类有升有降。前后 ARI 为 0.378–0.539 的四簇方案均发生了明显的成员变化。DBSCAN 降维后只剩一个有效簇，含 4,332 人，另有 6 位噪声客户，因此三项内部指标均留空。
+
+[PCA 对照图](../results/comparison/shared_five_algorithms/pca/pca_comparison.png) · [评分明细](../results/comparison/shared_five_algorithms/pca/scores_per_run.csv) · [逐客户归属](../results/comparison/shared_five_algorithms/pca/assignments.csv) · [PCA 载荷](../results/comparison/shared_five_algorithms/pca/loadings.csv)
+
+## 实验六：谱聚类客户画像
+
+使用谱聚类六维 RBF 基准的种子 42 标签，经 CustomerID 连接全量客户原始尺度特征。下表的消费占比按各簇 Monetary 合计计算。
+
+| 簇 | 人数 | 客户占比 | 消费占比 | 最近购买距今中位天数 | 频次中位数 | 消费额中位数 | 客单价中位数 |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| 0 | 1,192 | 27.48% | 5.38% | 38.5 | 2 | 323.33 | 168.70 |
+| 1 | 828 | 19.09% | 2.78% | 263 | 1 | 247.77 | 205.29 |
+| 2 | 1,165 | 26.86% | 72.71% | 17 | 7 | 2599.19 | 352.48 |
+| 3 | 1,153 | 26.58% | 19.13% | 65 | 2 | 899.63 | 443.60 |
+
+簇 2 购买最近、频次最高，贡献约 72.7% 的消费额。簇 3 的客单价中位数最高，购买频次中位数为 2。簇 0 购买相对近期、客单价中位数最低。簇 1 距上次购买时间最长，频次中位数为 1。这些画像描述观测期内的购买行为。
+
+[原始尺度画像图](../results/comparison/shared_five_algorithms/spectral_profiles/profile_medians.png) · [簇汇总](../results/comparison/shared_five_algorithms/spectral_profiles/cluster_summary.csv) · [六特征统计](../results/comparison/shared_five_algorithms/spectral_profiles/feature_statistics.csv)
+
+## 五算法性能指标热力图
+
+图中三项内部评分使用相同的 4,306 位非噪声客户，统一墙钟耗时取全量 4,338 人的同机三次均值。单元格显示原始均值，颜色按各指标方向在列内排名。DBSCAN 有两个有效簇，簇大小为 4,302 和 4。
+
+[性能热力图](../results/comparison/shared_five_algorithms/performance_heatmap.png) · [绘图数据](../results/comparison/shared_five_algorithms/performance_heatmap_data.csv)
+
+在项目根目录执行 `python -m experiments.complete_c_deliverables` 可重新生成以上交付物。该命令仅重新拟合 PCA 两维固定基线，谱聚类画像和性能热力图复用已归档数据。
