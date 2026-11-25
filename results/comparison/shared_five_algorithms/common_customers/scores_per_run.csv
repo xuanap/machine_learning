@@ -1,0 +1,12 @@
+algorithm,seed,customers,clusters,min_cluster_size,cluster_sizes,source,silhouette,davies_bouldin,calinski_harabasz,silhouette_samples,metric_note
+kmeans,0,4306,4,800,"{""0"": 800, ""1"": 1446, ""2"": 1136, ""3"": 924}",results/formal/a_shared_baseline_v1/000_kmeans_seed0/labels.csv,0.25295848862618947,1.2820989546043535,2160.2086396423647,4306,
+kmeans,42,4306,4,797,"{""0"": 1431, ""1"": 797, ""2"": 1178, ""3"": 900}",results/formal/a_shared_baseline_v1/001_kmeans_seed42/labels.csv,0.25419510823123936,1.2780373517591979,2159.5245438411425,4306,
+kmeans,2026,4306,4,798,"{""0"": 920, ""1"": 1436, ""2"": 1152, ""3"": 798}",results/formal/a_shared_baseline_v1/002_kmeans_seed2026/labels.csv,0.25323618628451383,1.2810158240803324,2160.375886471727,4306,
+gmm,0,4306,4,829,"{""0"": 1489, ""1"": 884, ""2"": 1104, ""3"": 829}",results/formal/a_shared_baseline_v1/003_gmm_seed0/labels.csv,0.10554277760659937,2.426131760525906,1298.0844197849121,4306,
+gmm,42,4306,4,829,"{""0"": 884, ""1"": 1489, ""2"": 1104, ""3"": 829}",results/formal/a_shared_baseline_v1/004_gmm_seed42/labels.csv,0.10554277760659937,2.426131760525906,1298.0844197849121,4306,
+gmm,2026,4306,4,829,"{""0"": 1131, ""1"": 1489, ""2"": 829, ""3"": 857}",results/formal/a_shared_baseline_v1/005_gmm_seed2026/labels.csv,0.11318966510438862,2.2026061655806695,1346.5714449484547,4306,
+ward,42,4306,4,919,"{""0"": 1147, ""1"": 1183, ""2"": 919, ""3"": 1057}",results/b/full_20261124_v2/clustering/ward_k4/labels.csv,0.19052317167790656,1.5444553303154671,1790.4138485192568,4306,
+dbscan,42,4306,2,4,"{""0"": 4302, ""1"": 4}",results/b/full_20261124_v2/clustering/dbscan_selected/labels.csv,0.5310959741720268,0.43928317944542705,33.391555295394824,4306,
+spectral,0,4306,4,826,"{""0"": 1187, ""1"": 1155, ""2"": 826, ""3"": 1138}",results/comparison/shared_five_algorithms/common_customers/spectral_seed0_full_labels.csv,0.25789213288201396,1.335887728388898,2062.244173292151,4306,
+spectral,42,4306,4,826,"{""0"": 1187, ""1"": 826, ""2"": 1154, ""3"": 1139}",results/comparison/shared_five_algorithms/common_customers/spectral_seed42_full_labels.csv,0.2578206794348916,1.3359035262024572,2061.9493100626732,4306,
+spectral,2026,4306,4,826,"{""0"": 1154, ""1"": 1139, ""2"": 826, ""3"": 1187}",results/comparison/shared_five_algorithms/common_customers/spectral_seed2026_full_labels.csv,0.2578206794348916,1.3359035262024572,2061.9493100626737,4306,

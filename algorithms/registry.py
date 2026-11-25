@@ -3,7 +3,7 @@
 import numpy as np
 from threadpoolctl import threadpool_limits
 
-from algorithms import gmm, kmeans
+from algorithms import dbscan, gmm, hierarchical, kmeans
 from algorithms.common import validate_matrix
 from algorithms.spectral import spectral_clustering
 
@@ -16,6 +16,8 @@ ADAPTERS = {
     "kmeans": lambda X, params, seed, threads: kmeans.fit_predict(X, params, seed, threads).labels,
     "gmm": lambda X, params, seed, threads: gmm.fit_predict(X, params, seed, threads).labels,
     "spectral": _spectral,
+    "hierarchical": lambda X, params, seed, threads: hierarchical.fit_predict(X, params, seed, threads).labels,
+    "dbscan": lambda X, params, seed, threads: dbscan.fit_predict(X, params, seed, threads).labels,
 }
 
 

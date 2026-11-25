@@ -1,85 +1,72 @@
-# 统一聚类对比实验
+# 客户聚类五算法基准与综合分析
 
-## 统一调用
+[汇报图 PNG](../results/comparison/shared_five_algorithms/benchmark.png) · [完整数据 CSV](../results/comparison/shared_five_algorithms/benchmark.csv) · [三算法原报告](shared_three_algorithms_archive.md)
 
-`algorithms.registry.cluster(X, algorithm, params, random_state=42, threads=1)`
-接收预处理后的二维特征矩阵、算法名和算法参数，返回每个输入客户对应的整数标签。
-K-means 和 GMM 复用 A 的实现，谱聚类调用 C 的实现。
-接入 DBSCAN 和层次聚类时，在 `ADAPTERS` 增加适配器，接收
-`(X, params, seed, threads)` 并返回标签，保持客户行顺序。DBSCAN 的 -1 表示噪声。
+五种算法均使用 Online Retail 的 4,338 位客户和同一组六维建模坐标。四个偏态特征经 log1p 后，六维特征统一标准化。三算法归档实际使用的矩阵与 B 正式归档的 float64 矩阵 SHA-256 一致，源特征表指纹也一致。评分表由归档汇总生成。同机计时仅复跑固定基准配置。
 
-## 数据、评分和计时
+| 算法与配置 | 归档运行数 | 有效簇 | 评分人数 | 噪声 | 覆盖率 | Silhouette ↑ | Davies–Bouldin ↓ | Calinski–Harabasz ↑ |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| K-means / K=4，k-means++ | 3 | 4 | 4,338 | 0 | 100% | 0.2504 | 1.2877 | 2055.93 |
+| GMM / 4 分量，全协方差 | 3 | 4 | 4,338 | 0 | 100% | 0.1060 | 2.3880 | 1255.27 |
+| 谱聚类 / K=4，RBF γ=0.1 | 3 | 4 | 4,338 | 0 | 100% | 0.2559 | 1.3358 | 1980.64 |
+| 层次聚类 / Ward，K=4 | 1 | 4 | 4,338 | 0 | 100% | 0.1882 | 1.5516 | 1717.27 |
+| DBSCAN / ε=1.25，min_samples=5 | 1 | 2 | 4,306 | 32 | 99.26% | 0.5311 | 0.4393 | 33.39 |
 
-正式运行校验原始特征表，调用一次公共预处理核对坐标，使用全部 4,338 位客户的六维标准化特征。
-三种算法共用 K=4、种子 0/42/2026 和单线程，沿用 A 的 K-means/GMM 基线参数，
-谱聚类使用 RBF gamma=0.1。K=4 用于与 A 的同粒度基线对齐。
+评分均使用建模空间的欧氏距离；噪声标签 −1 从内部评分中剔除。前三行取种子 0、42、2026 的均值。Ward 和 DBSCAN 各引用一次确定性运行，种子 42 仅为接口参数。DBSCAN 的配置来自 B 的参数扫描，是放宽最小簇规模约束后的展示配置。
 
-统一评估函数 `experiments.group_metrics.evaluate_comparison` 计算全量已分簇客户的
-欧氏 Silhouette、Davies–Bouldin 和 Calinski–Harabasz，同时报告有效簇数、噪声人数和覆盖率。
-含噪声算法的分数应结合覆盖率阅读，只有一个有效簇或每人一个簇时指标留空。
-通用对比耗时测量统一调用的墙钟时间，包含验证、拟合和标签生成，
-排除预处理、指标计算和文件写入。汇总取三个种子的均值和样本标准差。
+## 数据来源与计时边界
 
-## 接入 A 的结果与复现
+- K-means、GMM、谱聚类来自 C 的 [统一调用逐种子结果](../results/comparison/shared_three_algorithms/per_seed.csv) 和 [运行清单](../results/comparison/shared_three_algorithms/manifest.json)。K-means/GMM 的 [A 组正式基线](../results/formal/a_shared_baseline_v1/summary.csv) 保留为独立归档，其 fit 耗时采用 estimator.fit 边界。谱聚类采用 C 的 K=4 RBF 对照，独立的 [谱聚类参数探索](spectral_parameter_experiments.md) 保留其原配置与计时。
+- Ward 与 DBSCAN 来自 B 的 [正式运行清单](../results/b/full_20261124_v2/manifest.json)、[层次扫描](../results/b/full_20261124_v2/clustering/hierarchical/parameter_summary.csv) 和 [密度扫描](../results/b/full_20261124_v2/clustering/dbscan/parameter_summary.csv)。汇总脚本对照 B 清单校验两张扫描表的文件哈希。
 
-脚本读取 A 的正式基线归档，核对输入矩阵指纹和各次运行参数。为避免不同环境的浮点舍入影响，
-三种算法均使用通过哈希校验的 A 归档标准化矩阵。归档输入与公共预处理按客户顺序逐项核对，
-最大绝对差写入 manifest。通过 CustomerID
-对齐原标签并用统一函数重新评分。归档标签和重跑标签的 ARI 用于判断两次分组是否一致，
-无需对齐簇编号。综合表使用同机重跑结果，以统一计时边界。
+## 五算法同机计时
 
-在项目根目录执行：
+在同一台机器上使用同一归档矩阵、单线程和同一共享入口。每种算法先预热一次，再按轮次轮换执行顺序，共计时三次。随机算法沿用种子 0、42、2026，Ward 与 DBSCAN 的种子仅作接口占位。墙钟时间覆盖共享入口的验证、线程限制、拟合和标签生成，排除读盘、预处理、评分与写盘。15 次计时输出与各自参考标签的全量 ARI 均为 1。
 
-```bash
-python -m pip install -r requirements.txt
-python -m experiments.baseline_comparison
-```
+| 算法 | 同机墙钟秒数（均值 ± 样本标准差） |
+|---|---:|
+| K-means | 0.0256 ± 0.0011 |
+| GMM | 0.1218 ± 0.0086 |
+| 谱聚类 | 1.1647 ± 0.0538 |
+| Ward | 0.5535 ± 0.0606 |
+| DBSCAN | 0.1435 ± 0.0016 |
 
-通过 `--archive` 指定其他同结构 A 基线归档，通过 `--output` 指定输出目录。
-默认输出在 `results/comparison/shared_three_algorithms/`。
+本机固定配置下，按平均耗时从短到长依次为 K-means、GMM、DBSCAN、Ward、谱聚类。旧三算法墙钟及 B 的原生耗时保留在基准 CSV 中供溯源。B 的 Ward 原生时间包含建树及切树，DBSCAN 原生时间覆盖 estimator.fit。
 
-- `summary.csv` 汇总三种算法的指标与耗时。
-- `per_seed.csv` 保存逐种子结果。
-- `a_archive_audit.csv` 保存 A 的原分数、重评分和重跑 ARI。
-- `heatmap.png` 标注各列原始均值，底色按各指标优劣方向在列内排名，颜色越深排名越高。
-- `manifest.json` 保存输入溯源、参数、种子及口径。
+[耗时图](../results/comparison/shared_five_algorithms/timing/runtime.png) · [逐次计时](../results/comparison/shared_five_algorithms/timing/per_run.csv) · [环境与口径](../results/comparison/shared_five_algorithms/timing/manifest.json)
 
-## 三种算法的综合性能分析
+## 共享接口
 
-以下结果使用同一批 4,338 位客户、同一份六维标准化矩阵、K=4 和种子 0、42、2026。
-三种算法每次都得到 4 个簇，客户覆盖率均为 100%。表内为三个种子的均值。
+- `algorithms.registry.cluster(X, algorithm, params, random_state=42, threads=1)` 支持 `kmeans`、`gmm`、`spectral`、`hierarchical` 和 `dbscan`。返回按输入顺序排列的一维整数标签，DBSCAN 噪声为 −1。X 是已预处理的二维矩阵，CustomerID 在调用侧独立保留。
+- K-means、GMM、Ward 和 DBSCAN 的模块同时提供返回 `ClusteringResult` 的 `fit_predict`。统一入口复用这些模块的标签输出。
+- 在项目根目录运行 `python -m experiments.five_algorithm_timing` 可复测固定配置。复测前须保留共同子集分析生成的谱聚类全量标签，供计时结果核对。
 
-| 算法 | Silhouette ↑ | Davies–Bouldin ↓ | Calinski–Harabasz ↑ | 耗时均值 ± 样本标准差（秒） |
-|---|---:|---:|---:|---:|
-| K-means | 0.2504 | **1.2877** | **2055.93** | **0.0355 ± 0.0136** |
-| GMM | 0.1060 | 2.3880 | 1255.27 | 0.1094 ± 0.0128 |
-| 谱聚类（RBF，gamma=0.1） | **0.2559** | 1.3358 | 1980.64 | 1.0224 ± 0.0688 |
+## 共同非噪声子集评分与一致性
 
-### 聚类效果
+以 B 组选定的 DBSCAN 标签锁定 4,306 位非噪声客户。全部标签来自 4,338 人的全量拟合，按 CustomerID 筛选后在同一矩阵上重评分。K-means、GMM 复用 A 归档，各种子与 C 基准的审计 ARI 均为 1。Ward、DBSCAN 复用 B 归档，重评分与 B 原共同子集结果一致。谱聚类仅补跑基准的三个种子，三项全量评分均与原归档一致，逐客户标签标记为本次补跑。
 
-谱聚类的平均 Silhouette 比 K-means 高约 0.0054，K-means 的 Davies–Bouldin 更低、
-Calinski–Harabasz 更高。三个种子下，各项指标的算法排序均一致。
-谱聚类的 Silhouette 样本标准差约为 0.00004，K-means 约为 0.00070，GMM 约为 0.00460。
-这些结果描述同一数据集上分数随种子的波动。若要判断具体客户的归属是否稳定，
-需要进一步比较不同种子的标签，例如计算两两 ARI。
+| 算法 | Silhouette ↑ | Davies–Bouldin ↓ | Calinski–Harabasz ↑ |
+|---|---:|---:|---:|
+| K-means | 0.2535 ± 0.0006 | 1.2804 ± 0.0021 | 2160.04 ± 0.45 |
+| GMM | 0.1081 ± 0.0044 | 2.3516 ± 0.1291 | 1314.25 ± 27.99 |
+| 谱聚类 | 0.2578 ± 0.00004 | 1.3359 ± 0.00001 | 2062.05 ± 0.17 |
+| Ward | 0.1905 | 1.5445 | 1790.41 |
+| DBSCAN | 0.5311 | 0.4393 | 33.39 |
 
-GMM 在本轮三个内部指标上的硬标签表现均较弱。内部指标衡量标准化特征空间中的分离度和紧凑度。
-客户群是否具备运营意义，还要结合原始尺度的消费金额、购买频率等特征检查各簇画像。
+随机算法报告三个种子的均值 ± 样本标准差，Ward 和 DBSCAN 报告单次结果。DBSCAN 两簇仍分别为 4,302 人和 4 人。
 
-### 运行时间
+种子 42 的跨算法对照中，K-means 与谱聚类最接近（ARI 0.623），DBSCAN 与其他算法的 ARI 均接近 0。共同子集上的跨种子 ARI 范围分别为 K-means 0.947–0.982、GMM 0.881–1.000、谱聚类 0.9993–1.0000。逐客户差异表使用最大重叠一对一匹配，未匹配簇的对应字段留空。交叉表保留所有簇对及人数，可查看拆分和合并关系。
 
-在本次单机、单线程和统一计时口径下，GMM 和谱聚类的平均运行时间分别约为
-K-means 的 3.1 倍和 28.8 倍。K-means 的三次耗时范围为 0.026–0.051 秒，
-GMM 为 0.095–0.117 秒，谱聚类为 0.972–1.101 秒。
-当前 RBF 谱聚类需要构造稠密相似度矩阵，其存储量随客户数平方增长。
+[评分明细](../results/comparison/shared_five_algorithms/common_customers/scores_per_run.csv) · [一致性热图](../results/comparison/shared_five_algorithms/common_customers/ari_seed42.png) · [逐客户标签](../results/comparison/shared_five_algorithms/common_customers/assignments_all_runs.csv) · [簇交叉表](../results/comparison/shared_five_algorithms/common_customers/pairwise_overlaps_seed42.csv) · [匹配后差异](../results/comparison/shared_five_algorithms/common_customers/different_assignments_seed42.csv) · [跨种子 ARI](../results/comparison/shared_five_algorithms/common_customers/ari_between_seeds.csv)
 
-### 适用场景与优缺点
+在项目根目录运行 `python -m experiments.common_customer_comparison` 可复现该分析，命令会补跑三个谱聚类基准配置。
 
-| 算法 | 在客户细分中的适用场景与优势 | 局限 |
-|---|---|---|
-| K-means | 适合周期性更新分群和快速建立基线。可用簇内原尺度特征统计解释典型消费行为，已有质心也便于给新客户快速分组。 | 依赖距离与质心，偏好较紧凑的簇。异常值、伸长形状或重叠群体可能影响边界，需预先设定 K。 |
-| GMM | 适合需要识别边界客户的任务，例如保留各群归属概率。全协方差模型可以表示方向和离散程度不同的群体。 | 依赖混合高斯假设，协方差估计和初始化会影响结果，需预先设定组件数。本次三项评分基于最大概率硬标签。 |
-| 谱聚类 | 适合探索由局部相似关系形成的非凸分群。可通过相似度图表达消费行为之间的连接结构。 | 建图方式和参数会影响结果。当前 RBF 实现的内存开销及运行时间较高，给新客户分组需另行设计。 |
+## 综合判断
 
-综合来看，K-means 可作为当前数据的运营基线。谱聚类适合进一步检验其额外耗时是否换来更有区分度的客户画像。
-若业务需要按归属概率处理边界客户，可以另行评价 GMM 的概率输出。以上判断基于固定 K=4 的基线配置。
+在四簇、全覆盖的比较中，谱聚类的平均 Silhouette 比 K-means 高约 0.0054，K-means 的 Davies–Bouldin 最低、Calinski–Harabasz 最高，在本次五算法统一计时中也最快。K-means 适合作为周期性运营分群基线。谱聚类适合进一步检查相似度结构能否带来业务上更清晰的画像；当前稠密 RBF 相似度矩阵随人数平方增长。
+
+Ward 的三项指标均弱于 K-means 和谱聚类，但四个簇分别含 1,158、1,195、921 和 1,064 人。树状结构与较均衡的簇规模便于探索不同分群粒度。GMM 在当前硬标签评分中较弱，若业务需要识别边界客户，可通过归属概率单独评价。
+
+DBSCAN 虽有较高的 Silhouette 和较低的 Davies–Bouldin，但其 4,306 位已分群客户中有 4,302 人落在同一簇，另一簇仅 4 人，还有 32 位噪声客户。在同一 4,306 人子集上，Ward 的 Silhouette 为 0.1905、CH 为 1790.41，DBSCAN 分别为 0.5311 和 33.39。结合规模与覆盖率，这一配置适合探索异常和微型群体，四群运营细分可沿用 K-means 基线。
+
+在项目根目录执行 `python tools/summarize_five_algorithms.py` 可从同一批归档重新生成汇报图和 CSV。
