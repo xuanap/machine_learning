@@ -59,6 +59,20 @@
 
 [评分明细](../results/comparison/shared_five_algorithms/common_customers/scores_per_run.csv) · [一致性热图](../results/comparison/shared_five_algorithms/common_customers/ari_seed42.png) · [逐客户标签](../results/comparison/shared_five_algorithms/common_customers/assignments_all_runs.csv) · [簇交叉表](../results/comparison/shared_five_algorithms/common_customers/pairwise_overlaps_seed42.csv) · [匹配后差异](../results/comparison/shared_five_algorithms/common_customers/different_assignments_seed42.csv) · [跨种子 ARI](../results/comparison/shared_five_algorithms/common_customers/ari_between_seeds.csv)
 
+### 实验五的五算法稳定性汇总
+
+| 算法 | 种子 0 / 42 | 种子 0 / 2026 | 种子 42 / 2026 |
+|---|---:|---:|---:|
+| K-means | 0.9471 | 0.9824 | 0.9624 |
+| GMM | 1.0000 | 0.8808 | 0.8808 |
+| 谱聚类 | 0.9993 | 0.9993 | 1.0000 |
+| Ward | 1.0000 | 1.0000 | 1.0000 |
+| DBSCAN | 1.0000 | 1.0000 | 1.0000 |
+
+前三行在共同子集上直接比较三个种子的标签。Ward 和 DBSCAN 复用同机计时复测证据：各自的三次运行均与同一份全量参考划分达到 ARI 1，因此限制到同一共同子集后划分也相同。两种算法的种子参数用于兼容接口。该核验反映固定数据和配置下的复现性。
+
+[五算法稳定性汇总 CSV](../results/comparison/shared_five_algorithms/common_customers/stability_five_algorithms.csv)
+
 在项目根目录运行 `python -m experiments.common_customer_comparison` 可复现该分析，命令会补跑三个谱聚类基准配置。
 
 ## 综合判断

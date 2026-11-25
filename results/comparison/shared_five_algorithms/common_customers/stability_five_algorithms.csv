@@ -1,0 +1,16 @@
+algorithm,seed_a,seed_b,ari,evidence
+kmeans,0,42,0.9471255528427719,common_customer_labels
+kmeans,0,2026,0.9823816379646723,common_customer_labels
+kmeans,42,2026,0.9623985424061008,common_customer_labels
+gmm,0,42,1.0,common_customer_labels
+gmm,0,2026,0.8808153409953728,common_customer_labels
+gmm,42,2026,0.8808153409953728,common_customer_labels
+spectral,0,42,0.9993481635424594,common_customer_labels
+spectral,0,2026,0.9993481635424594,common_customer_labels
+spectral,42,2026,1.0,common_customer_labels
+ward,0,42,1.0,same_reference_partition_on_full_input
+ward,0,2026,1.0,same_reference_partition_on_full_input
+ward,42,2026,1.0,same_reference_partition_on_full_input
+dbscan,0,42,1.0,same_reference_partition_on_full_input
+dbscan,0,2026,1.0,same_reference_partition_on_full_input
+dbscan,42,2026,1.0,same_reference_partition_on_full_input
